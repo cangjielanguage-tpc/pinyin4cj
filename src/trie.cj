@@ -109,19 +109,6 @@ public class Trie {
         
     }
 
-    /**
-     * Load user-defined extension thesaurus
-     */
-    public func loadMultiPinyinExtend(): Unit {
-        var path: String = MultiPinyinConfig.multiPinyinPath
-        if (path != "") {
-            var userMultiPinyinFile: File = File(path, Open(true, true))
-            if (File.exists(path)) {
-                loadMultiPinyin(userMultiPinyinFile)
-            }
-        }
-    }
-
     public func get(hexString: String): ?Trie {
         return values.get(hexString)
     }
