@@ -32,7 +32,6 @@ class ChineseToPinyinResource {
             setUnicodeToHanyuPinyinTable(Trie())
             getUnicodeToHanyuPinyinTable().load(ResourceHelper.getResourceInputStream(resourceName))
             getUnicodeToHanyuPinyinTable().loadMultiPinyin(ResourceHelper.getResourceInputStream(resourceMultiName))
-            getUnicodeToHanyuPinyinTable().loadMultiPinyinExtend()
 
         } catch (e: Exception) {
             throw e
