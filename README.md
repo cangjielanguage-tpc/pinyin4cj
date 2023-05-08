@@ -1,127 +1,111 @@
 <div align="center">
-<h1>库名</h1>
+<h1>pinyin4cj</h1>
 </div>
 
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v0.38.2-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjcov-50%25-red" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjcov-92.1%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
 
 ## 介绍
 
-介绍库或者框架符合的标准，应用领域，解决什么问题。有哪些主要的特点，与同类库相比有哪些优点。
+Pinyin4j 是一个支持将汉字转换成拼音的三方库，输出的拼音格式可以自定义设置。
 
 ### 特性
 
-- 🚀 特性1
+- 🚀 支持 Unicode 格式的字符 ü、支持声调符号、支持大小写
 
-- 🚀 特性2
+- 💪 支持转换通用拼音
 
-- 💪 特性3
+- 🛠️ 支持转换通用拼音
 
-- 🛠️ 特性4
+- 🌍 支持常见多音字转换成拼音
 
-- 🌍 特性5
-
-- 💡  特性6
-
-### 路线
-
-<p align="center">
-<img src="./doc/assets/milestone.png" width="100%" >
-</p>
-路线图roadmap在 doc/framework-roadmap-logo.pptx 中有源文件。
-
+- 💡 支持常用简体/繁体中文字符转换成拼音
 
 ## 软件架构
 
-### 架构图
-
-<p align="center">
-<img src="./doc/assets/framework.png" width="60%" >
-</p>
-
-架构图文字说明，包括模块说明、架构层次等详细说明。
-
 ### 源码目录
+
 
 ```shell
 .
-├── README.md
 ├── doc
-│   ├── assets
-│   ├── cjcov
-│   ├── design.md
-│   ├── proposal.md
-│   └── xxx_lib.md
 ├── src
-│   └── Template.cj
+│   ├── bad_hanyu_pinyin_output_format_combination.cj
+│   ├── chinese_to_pinyin_resource.cj
+│   ├── get_file_path.cj
+│   ├── hanyu_pinyi_vchar_type.cj
+│   ├── hanyu_pinyin_case_type.cj
+│   ├── hanyu_pinyin_output_format.cj
+│   ├── hanyu_pinyin_tone_type.cj
+│   ├── hashtable.cj
+│   ├── pinyin_formatter.cj
+│   ├── pinyin_helper.cj
+│   ├── pinyin_romanization_type.cj
+│   ├── resource_helper.cj
+│   ├── trie.cj
 └── test
-    ├── HLT
-    ├── LLT
-    └── UT
+│   ├── HLT
+│   ├── LLT
+│   └── UT
+├── CHANGELOG.md
+├── gitee_gate.cfg
+├── LICENSE.txt
+├── module.json
+├── README.md
+├── README.OpenSource
 ```
 
-- `doc`  文档目录，用于存放设计、API接口等文档
-- `src`  源码目录
-- `test` 测试目录
+- `doc` 存放库的特性文档
+- `src` 是库源码目录
+- `test` 存放 HLT 测试用例、LLT 自测用例和 UT 单元测试用例
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](./doc/api.md)
-
+主要类和函数接口说明详见 [API](./doc/feature_api.md)
 
 ## 使用说明
 
 ### 编译构建
 
-描述具体的编译过程：
+1. linux x86_64 编译
 
 ```shell
-cpm update
-cpm build
+./pinyin4cj_build.sh
+```
+
+2. Windows 编译
+```shell
+pinyin4cj_build.bat
 ```
 
 ### 功能示例
-#### xxx 功能示例
 
-功能示例描述:
+#### 词句转拼音示例
 
 示例代码如下：
 
 ```cangjie
-import xxx.*
+from pinyin4cj import pinyin4cj.*
+
 main() {
- xxxx
+    var defaultFormat: HanyuPinyinOutputFormat = HanyuPinyinOutputFormat()
+    defaultFormat.setToneType(HanyuPinyinToneType.WITH_TONE_MARK)
+    defaultFormat.setVCharType(HanyuPinyinVCharType.WITH_U_UNICODE)
+    var pinyinArray: String = PinyinHelper.toHanYuPinyinString("我们是中国共产主义接班人", defaultFormat, ",", false)
+    println(pinyinArray)
+    return 0
 }
 ```
 
 执行结果如下：
 
 ```shell
-xxx
-```
-
-#### xxxx 功能示例
-
-功能示例描述:
-
-示例代码如下：
-
-```cangjie
-import xxx.*
-main() {
- xxxx
-}
-```
-
-执行结果如下：
-
-```shell
-xxx
+wŏ,men,shì,zhōng,guó,gòng,chăn,zhŭ,yì,jiē,bān,rén
 ```
 
 ## 开源协议

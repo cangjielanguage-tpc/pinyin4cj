@@ -76,7 +76,7 @@ public class PinyinHelper {
                     do {
                         resultPinyinStrBuf.append(PinyinFormatter.formatHanyuPinyin(pinyinStrArray[n], outputFormat))
                         //Not the last one, (nor the last one in Pinyin, and not the last one to match successfully)
-                        if (current < chars.size || (n < pinyinStrArray.size - 1 && k != success)) {
+                        if (current < chars.size || (n <= pinyinStrArray.size - 1)) {
                             resultPinyinStrBuf.append(separate)
                         }
                         if (k == success) {
@@ -89,7 +89,11 @@ public class PinyinHelper {
             k = success
             k++
         }while(k < chars.size)
-
-        return resultPinyinStrBuf.toString()
+        var res: String = resultPinyinStrBuf.toString()
+        if(separate.size != 0) {
+            let lastIndex: Int64 = res.lastIndexOf(separate).getOrThrow()
+            res = res.substring(0, lastIndex)
+        }
+        return res
     }
 }
