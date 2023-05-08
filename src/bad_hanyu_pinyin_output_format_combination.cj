@@ -9,7 +9,7 @@ public class BadHanyuPinyinOutputFormatCombination <: Exception {
     init() {
         super()
     }
-    init(messages: String) {
+    public init(messages: String) {
         super(messages)
     }
 }
