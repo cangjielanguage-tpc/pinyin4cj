@@ -56,6 +56,32 @@ class ChineseToPinyinResource {
     static func getInstance(): ChineseToPinyinResource {
         return ChineseToPinyinResourceHolder.theInstance
     }
+
+    func getHanyuPinyinStringArray(ch: Char): Array<String> {
+        let pinyinRecord: String = getHanyuPinyinRecordFromChar(ch)
+        return parsePinyinString(pinyinRecord)
+    }
+
+    private func getHanyuPinyinRecordFromChar(ch: Char): String {
+        let codepointHexStr: String = UInt32(ch).format("0x").toUpper()
+        let trie: ?Trie = getUnicodeToHanyuPinyinTable().get(codepointHexStr)
+        var foundRecord: String = ""
+        if (let Some(t) = trie) {
+            foundRecord = trie.getOrThrow().getPinyin()
+        } 
+        if(isValidRecord(foundRecord)) {
+            return foundRecord
+        }
+        return ""
+    }
+
+    private func isValidRecord(record: String): Bool {
+        let noneStr: String = "(none0)"
+        return (record != "") &&
+            !record.equals(noneStr) &&
+            record.startsWith(Field.LEFT_BRACKET) && 
+            record.endsWith(Field.RIGHT_BRACKET)
+    }
 }
 
 class ChineseToPinyinResourceHolder {

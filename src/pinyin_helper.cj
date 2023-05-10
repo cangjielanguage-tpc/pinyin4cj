@@ -10,7 +10,8 @@ package pinyin4cj
  * representations
  */
 public class PinyinHelper {
-
+    private static var ARR_EMPTY: Array<String> = []
+    private static var EMPTY: String = ""
     /**
      * Word or sentence to pinyin
      * 
@@ -95,5 +96,45 @@ public class PinyinHelper {
             res = res.substring(0, lastIndex)
         }
         return res
+    }
+    /**
+     * Get all unformmatted Tongyong Pinyin presentations of a single Chinese
+     * character (both Simplified and Tranditional)
+     *
+     * @param - ch the given Chinese character
+     * @return-  a String array contains all unformmatted Tongyong Pinyin
+     * presentations with tone numbers null for non-Chinese character
+     */
+    static public func toTongyongPinyinStringArray(ch: Char): Array<String> {
+        return convertToTargetPinyinStringArray(ch, PinyinRomanizationType.TONGYONG_PINYIN)
+    }
+
+    private static func convertToTargetPinyinStringArray(
+        ch: Char,
+        targetPinyinSystem: PinyinRomanizationType
+        ): Array<String> {
+        var hanyuPinyinStringArray: Array<String> = getUnformattedHanyuPinyinStringArray(ch)
+
+        if (hanyuPinyinStringArray.size != 0) {
+           var targetPinyinStringArray: Array<String> = Array<String>(hanyuPinyinStringArray.size, item: "")
+            var i: Int64 = 0
+            do {
+                targetPinyinStringArray[i] =
+                    PinyinRomanizationTranslator.convertRomanizationSystem(
+                        hanyuPinyinStringArray[i],
+                        PinyinRomanizationType.HANYU_PINYIN,
+                        targetPinyinSystem
+                    )
+                i++
+            } while(i < hanyuPinyinStringArray.size)
+            return targetPinyinStringArray
+        } else {
+            return ARR_EMPTY
+        }
+        return ARR_EMPTY   
+    }
+
+    private static func getUnformattedHanyuPinyinStringArray(ch: Char): Array<String> {
+        return ChineseToPinyinResource.getInstance().getHanyuPinyinStringArray(ch)
     }
 }
