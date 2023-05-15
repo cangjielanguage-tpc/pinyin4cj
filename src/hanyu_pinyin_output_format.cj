@@ -18,7 +18,7 @@ package pinyin4cj
  * UPPERCASE
  *    Combination	    WITH_U_AND_COLON	WITH_V	          WITH_U_UNICODE
  *    WITH_TONE_NUMBER	     LU:3	         LV3	               LÜ3
-*     WITHOUT_TONE	         LU:	         LV	                   LÜ
+ *     WITHOUT_TONE	         LU:	         LV	                   LÜ
  *    WITH_TONE_MARK	throw exception	     throw exception	   LǙ
 
  * 
@@ -31,36 +31,66 @@ public class HanyuPinyinOutputFormat {
 
     private var toneType: HanyuPinyinToneType = HanyuPinyinToneType("")
 
+    /**
+     * Initialize Chinese Pinyin output format
+     */
     public init() {
         restoreDefault()
     }
 
+    /**
+     * Reset Chinese Pinyin Output Format
+     */
     public func restoreDefault(): Unit {
         vCharType = HanyuPinyinVCharType.WITH_U_AND_COLON
         caseType = HanyuPinyinCaseType.LOWERCASE
         toneType = HanyuPinyinToneType.WITH_TONE_NUMBER
     }
 
+    /**
+     * Get Case Type
+     */
     public func getCaseType(): HanyuPinyinCaseType {
         return caseType
     }
 
+    /**
+     * Set Case Type
+     * 
+     * @param caseType - HanyuPinyinCaseType
+     */
     public func setCaseType(caseType: HanyuPinyinCaseType): Unit {
         this.caseType = caseType
     }
 
+    /**
+     * Get Tone Type
+     */
     public func getToneType(): HanyuPinyinToneType{
         return toneType
     }
 
+    /**
+     * Set Tone Type
+     * 
+     * @param toneType - HanyuPinyinToneType
+     */
     public func setToneType(toneType: HanyuPinyinToneType): Unit {
         this.toneType = toneType
     }
 
+    /**
+     * Get Output format of character 'ü' Type
+     */
     public func getVCharType(): HanyuPinyinVCharType {
         return vCharType
     }
 
+    /**
+     * Set VChar Type
+     * 
+     * @param charType - HanyuPinyinVCharType
+     */
     public func setVCharType( charType: HanyuPinyinVCharType): Unit {
         vCharType = charType
     }

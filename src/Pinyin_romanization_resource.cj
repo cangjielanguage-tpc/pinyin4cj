@@ -3,9 +3,9 @@ package pinyin4cj
 from encoding import xml.*
 
 class PinyinRomanizationResource {
-  /**
-   * A DOM model contains variable pinyin presentations
-   */
+   /**
+    * A DOM model contains variable pinyin presentations
+    */
     private var pinyinMappingDoc: ?XmlElement = XmlElement("Hanyu", "a")
 
     private func setPinyinMappingDoc(pinyinMappingDoc: XmlElement): Unit {

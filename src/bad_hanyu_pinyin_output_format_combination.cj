@@ -5,6 +5,9 @@
 
 package pinyin4cj
 
+/**
+ * An exception class indicates the wrong combination of pinyin output formats
+ */
 public class BadHanyuPinyinOutputFormatCombination <: Exception {
     init() {
         super()
