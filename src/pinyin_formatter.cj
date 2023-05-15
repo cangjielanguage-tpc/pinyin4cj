@@ -41,6 +41,27 @@ class PinyinFormatter {
         return str
     }
 
+    /**
+     * Convert tone numbers to tone marks using Unicode
+     * 
+     * <b>Algorithm for determining location of tone mark
+     * 
+     * A simple algorithm for determining the vowel on which the tone mark
+     * appears is as follows:
+     * 
+     * First, look for an "a" or an "e". If either vowel appears, it takes
+     * the tone mark. There are no possible pinyin syllables that contain both
+     * an "a" and an "e".
+     * 
+     * If there is no "a" or "e", look for an "ou". If "ou" appears, then
+     * the "o" takes the tone mark.
+     * 
+     * If none of the above cases hold, then the last vowel in the syllable
+     * takes the tone mark.
+     * 
+     * @param pinyinStr - the ascii represention with tone numbers
+     * @return String - the unicode represention with tone marks
+     */
     private static func convertToneNumber2ToneMark(pinyinStr: String): String {
         var lowerCasePinyinStr: String = pinyinStr.toLower()
         

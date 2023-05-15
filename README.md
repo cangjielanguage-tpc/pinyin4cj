@@ -14,6 +14,10 @@
 
 Pinyin4j 是一个支持将汉字转换成拼音的三方库，输出的拼音格式可以自定义设置。
 
+    参考地址：
+    https://pinyin4j.sourceforge.net/ 原始版本
+    https://github.com/belerweb/pinyin4j Maven 版本
+
 ### 特性
 
 - 🚀 支持 Unicode 格式的字符 ü、支持声调符号、支持大小写
@@ -27,6 +31,8 @@ Pinyin4j 是一个支持将汉字转换成拼音的三方库，输出的拼音�
 - 💡 支持常用简体/繁体中文字符转换成拼音
 
 ## 软件架构
+
+![design](./doc/assets/pinyin4cj_design.png)
 
 ### 源码目录
 
@@ -109,7 +115,7 @@ wŏ,men,shì,zhōng,guó,gòng,chăn,zhŭ,yì,jiē,bān,rén
 ```
 
 ## 开源协议
-xx License
+GNU LIBRARY GENERAL PUBLIC LICENSE
 
 ## 参与贡献
 
