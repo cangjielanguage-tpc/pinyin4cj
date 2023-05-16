@@ -137,4 +137,60 @@ public class PinyinHelper {
     private static func getUnformattedHanyuPinyinStringArray(ch: Char): Array<String> {
         return ChineseToPinyinResource.getInstance().getHanyuPinyinStringArray(ch)
     }
+
+    /**
+     * Get all unformmatted Hanyu Pinyin presentations of a single Chinese
+     * character (both Simplified and Tranditional)
+     * 
+     * For example,  If the input is '间', the return will be an array with
+     * two Hanyu Pinyin strings:  "jian1"  "jian4"  If the
+     * input is '李', the return will be an array with single Hanyu Pinyin
+     * string:  "li3"
+     * 
+     * Special Note: If the return is "none0", that means the input
+     * Chinese character exists in Unicode CJK talbe, however, it has no
+     * pronounciation in Chinese
+     *
+     * @param ch - the given Chinese character
+     * @return Array<String> - a String array contains all unformmatted Hanyu Pinyin
+     * presentations with tone numbers; null for non-Chinese character
+     */
+    static public func toHanyuPinyinStringArray(ch: Char): Array<String> {
+        return getUnformattedHanyuPinyinStringArray(ch)
+    }
+
+    /**
+     * Get all Hanyu Pinyin presentations of a single Chinese character (both
+     * Simplified and Tranditional)
+     * 
+     * For example, If the input is '间', the return will be an array with
+     * two Hanyu Pinyin strings:"jian1" "jian4"  If the
+     * input is '李', the return will be an array with single Hanyu Pinyin
+     * string:  "li3"
+     * 
+     * Special Note: If the return is "none0", that means the input
+     * Chinese character is in Unicode CJK talbe, however, it has no
+     * pronounciation in Chinese
+     *
+     * @param ch - the given Chinese character
+     * @param outputFormat -  describes the desired format of returned Hanyu Pinyin String
+     * @return Array<String> - a String array contains all Hanyu Pinyin presentations with tone
+     *                         numbers; return empty string for non-Chinese character
+     * @throws BadHanyuPinyinOutputFormatCombination if certain combination of output formats happens
+     */
+    static public func toHanyuPinyinStringArray(ch: Char, outputFormat: HanyuPinyinOutputFormat): Array<String> {
+        return getFormattedHanyuPinyinStringArray(ch, outputFormat)
+    }
+
+    static private func getFormattedHanyuPinyinStringArray(ch: Char, outputFormat: HanyuPinyinOutputFormat): Array<String> {
+        var pinyinStrArray: Array<String> = getUnformattedHanyuPinyinStringArray(ch)
+
+        if (pinyinStrArray.size != 0) {
+            for (i in 0..pinyinStrArray.size) {
+                pinyinStrArray[i] = PinyinFormatter.formatHanyuPinyin(pinyinStrArray[i], outputFormat)
+            }
+            return pinyinStrArray
+        }
+        return ARR_EMPTY
+    }
 }
