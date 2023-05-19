@@ -86,14 +86,14 @@ class PinyinFormatter {
                 var ouIndex: Int64 = lowerCasePinyinStr.indexOf(ouStr) ?? -1
                 
                 if (-1 != indexOfA){
-                    indexOfUnmarkedVowel = indexOfA
                     unmarkedVowel = charA
+                    indexOfUnmarkedVowel = indexOfA
                 } else if (-1 != indexOfE){
-                    indexOfUnmarkedVowel = indexOfE
                     unmarkedVowel = charE
+                    indexOfUnmarkedVowel = indexOfE
                 } else if (-1 != ouIndex){
-                    indexOfUnmarkedVowel = ouIndex
                     unmarkedVowel = ouStr.charAt(0)
+                    indexOfUnmarkedVowel = ouIndex
                 } else{
                     var k: Int64 = lowerCasePinyinStr.size - 1  
                     do {
