@@ -4,193 +4,229 @@
 
 package pinyin4cj
 
+from std import io.*
+from std import math.*
+
+let PINYIN_TABLE: HashMap<String, String> = PinyinResource.getPinyinResource()
+let MUTIL_PINYIN_TABLE: HashMap<String, String> = PinyinResource.getMutilPinyinResource()
+var PINYIN_SEPARATOR = "," 
+var CHINESE_LING: Char = '〇'
+var ALL_UNMARKED_VOWEL: String = "aeiouv"
+var ALL_MARKED_VOWEL: String = "āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ"
+
 /**
- * A class provides several utility functions to convert Chinese characters
- * (both Simplified and Tranditional) into various Chinese Romanization
- * representations
+ * Pinyin conversion
  */
 public class PinyinHelper {
-    private static var ARR_EMPTY: Array<String> = []
-    private static var EMPTY: String = ""
-    /**
-     * Word or sentence to pinyin
-     * 
-     * @param str - Word or sentence
-     * @param outputFormat - The required format of the returned Chinese Pinyin string
-     * @param separate - Delimiter, attached after a Chinese character 
-     *                   (excluding the last Chinese character at the end of 
-     *                   a sentence and non Chinese characters)
-     * @param retain - Do you want to keep characters that cannot be converted to pinyin characters
-     * @return String - A string in which all Chinese characters are replaced by their corresponding
-     *                  Pinyin representation
+
+    /*
+     * Convert pinyin with tone format to pinyin with numbers representing tone format
+     *
+     * @param str - pinyin with tone format
+     * @return Array<String> - pinyin with numbers representing tone format
      */
-    static public func toHanYuPinyinString(str: String, outputFormat: HanyuPinyinOutputFormat,
-                                            separate: String, retain: Bool): String {
-        if(str.size == 0) {
-            throw Exception("Provide words or sentences to be converted")
-        }
-        var resource: ChineseToPinyinResource = ChineseToPinyinResource.getInstance()
-        var resultPinyinStrBuf: StringBuilder = StringBuilder()
-        var chars: Array<Char> = str.toCharArray()
-
-        var k: Int64 = 0
-        do {
-            var result: String = ""//Longest result matched
-            var ch: Char = chars[k]
-            var currentTrie: Option<Trie> = resource.getUnicodeToHanyuPinyinTable()
-            var success: Int64 = k
-            var current: Int64 = k
-            do {
-                let hexStr: String = UInt32(ch).format("0x").toUpper()
-                currentTrie = currentTrie.getOrThrow().get(hexStr)
-                if(let Some(t) = currentTrie) {
-                    if (t.getPinyin() != "") {
-                        result = t.getPinyin()
-                        success = current
-                    }
-                    currentTrie = t.getNextTire()
-                }
-                current++
-                if (current < chars.size) {
-                    ch = chars[current]
-                }else {
+    static func convertWithToneNumber(str: String): Array<String> {
+        var pinyinArray: Array<String> = str.split(PINYIN_SEPARATOR)
+        
+        for(i in 0..pinyinArray.size) {
+            var hasMarkedChar: Bool = false
+            var originalPinyin: String = pinyinArray[i].replace("ü", "v")
+            
+            for(j in 0..originalPinyin.size) {
+                var originalChar: Char = originalPinyin.charAt(j)
+                if(UInt32(originalChar) < UInt32('a') || UInt32(originalChar) > UInt32('z')) {
+                    var indexInAllMarked: Int64 = ALL_MARKED_VOWEL.indexOf(originalChar).getOrThrow()
+                    var toneNumber: Int64 = indexInAllMarked % 4 + 1
+                    var replaceChar: Char = ALL_UNMARKED_VOWEL.charAt((indexInAllMarked - indexInAllMarked % 4) / 4)
+                    
+                    pinyinArray[i] = originalPinyin.replace(originalChar, replaceChar).concat(toneNumber.toString()) 
+                    hasMarkedChar = true
                     break
-                } 
-                match(currentTrie) {
-                    case None => break
-                    case Some(t) => ()      
-                }       
-            } while (true)
-
-            /*
-             * If there is no match in the prefix tree, it cannot be converted to pinyin 
-             * and can be directly output or removed
-            */
-            if (result == "") {
-                if (retain) {
-                    resultPinyinStrBuf.append(chars[k])
-                } 
-            } else {
-                var pinyinStrArray: Array<String> = resource.parsePinyinString(result)
-                if (pinyinStrArray.size != 0) {
-                    var n: Int64 = 0
-                    do {
-                        resultPinyinStrBuf.append(PinyinFormatter.formatHanyuPinyin(pinyinStrArray[n], outputFormat))
-                        //Not the last one, (nor the last one in Pinyin, and not the last one to match successfully)
-                        if (current < chars.size || (n <= pinyinStrArray.size - 1)) {
-                            resultPinyinStrBuf.append(separate)
-                        }
-                        if (k == success) {
-                            break
-                        }
-                        n++ 
-                    } while(n < pinyinStrArray.size)
                 }
             }
-            k = success
-            k++
-        }while(k < chars.size)
+            if(!hasMarkedChar) {
+                // Unable to find a pinyin letter with a tone, indicating a light tone, represented by the number 5
+                pinyinArray[i] = originalPinyin + "5"
+            }
+        }
+        return pinyinArray
+    }
+
+    /*
+     * Convert Pinyin with tone format to Pinyin without tone format
+     *
+     * @param str - Pinyin with tone format
+     * @return Array<String> - Pinyin without tone format
+     */
+    static func convertWithoutTone(str: String): Array<String> {
+        var s: String = str
+        var pinyinArray: Array<String> = Array<String>()
+        for(i in 0..ALL_MARKED_VOWEL.size) {
+            var originalChar: Char = ALL_MARKED_VOWEL.charAt(i)
+            var replaceChar: Char = ALL_UNMARKED_VOWEL.charAt((i - i % 4) / 4)
+            s = s.replace(originalChar.toString(), replaceChar.toString())
+        }
+        pinyinArray = s.replace("ü", "v").split(PINYIN_SEPARATOR)
+        return pinyinArray
+    }
+
+    /*
+     * Formatting Pinyin with Tones into Corresponding Formatted Pinyin
+     *
+     * @param str - Pinyin with tone format
+     * @param format - format
+     * @return Array<String>
+     */
+    static func formatPinyin(str: String, format: PinyinFormat): Array<String>{
+
+        if (format.getName() == "WITH_TONE_MARK") {
+			return str.split(PINYIN_SEPARATOR)
+		} else if (format.getName() == "WITH_TONE_NUMBER") {
+			return convertWithToneNumber(str)
+		} else if (format.getName() == "WITHOUT_TONE") {
+			return convertWithoutTone(str)
+		} else if (format.getName() == "FIRST_LETTER") {
+            return convertWithoutTone(str)
+        }
+		return Array<String>()
+    }
+
+    /* 
+     * Convert individual Chinese characters into corresponding pinyin formats
+     *
+     * @param str - Chinese characters
+     * @param format - format
+     * @return Array<String>
+     */
+    static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String> {  
+        var pinyinArray: Array<String> = Array<String>()
+        if(let Some(v) = PINYIN_TABLE.get(c.toString())) {
+            var arr: Array<String> = Array<String>()
+            pinyinArray = formatPinyin(v, format)
+        }
+        return pinyinArray
+    }
+
+    /* 
+     * Gets whether the given string finds the pinyin correspondence of the phrase in the dictionary
+     *
+     * @param str - Chinese characters
+     * @return Array<String>
+     */
+    static func getWords(str: String): Array<String> { 
+        for(i in 1..math.min(str.size + 1, 6)) {
+            match(MUTIL_PINYIN_TABLE.get(str.substring(0, i))) {
+                case None => continue
+                case Some(v) => return [str.substring(0, i)]
+            }
+        }
+        return []
+    }
+
+    /* 
+     * Convert strings into corresponding pinyin formats
+     *
+     * @param str - Chinese characters
+     * @param separator - Separator
+     * @param format - PinyinFormat
+     * @return String
+     */
+    public static func convertToPinyinString(str: String, separator: String, format: PinyinFormat): String {
+        var resultPinyinStrBuf: StringBuilder = StringBuilder()
+        var pos: Int64 = 0
+        let string: String = ChineseHelper.convertToSimplifiedChinese(str)
+        var i: Int64 = 0
+        var strLen: Int64 = string.size
+        while(i < strLen) {
+            var subStr: String = string.substring(i)
+            var commonPrefixList: Array<String> = getWords(subStr) 
+            if(commonPrefixList.size == 0) {
+                var c: Char = string.charAt(i)
+                if(ChineseHelper.isChinese(c) || c == CHINESE_LING) {
+                    var pinyinArray: Array<String> = convertToPinyinArray(c, format)
+                    if(pinyinArray.size > 0) {
+                        if(format.getName() == "FIRST_LETTER"){
+                            resultPinyinStrBuf.append(pinyinArray[0].charAt(0).toString())
+                            pos++
+                        }else{
+                            resultPinyinStrBuf.append(pinyinArray[0].concat(separator))
+                            pos++
+                        }
+                    }else{
+                        resultPinyinStrBuf.append(c.toString())
+                    }
+                } else {
+                    if(separator.size != 0 && ((i + 1) < strLen) && ChineseHelper.isChinese(string.charAt(i + 1))) {
+                        resultPinyinStrBuf.append(c.toString().concat(separator))
+                    } else {
+                        resultPinyinStrBuf.append(c.toString())
+                    } 
+                }
+                i++
+            } else {
+                var words: String = commonPrefixList[commonPrefixList.size - 1]
+                var pinyinArray: Array<String> = formatPinyin(MUTIL_PINYIN_TABLE[words], format)
+                for(j in 0..pinyinArray.size) {
+                    if(format.getName() == "FIRST_LETTER"){
+                        resultPinyinStrBuf.append(pinyinArray[j].charAt(0).toString())
+                        pos++
+                    }else{
+                        resultPinyinStrBuf.append(pinyinArray[j].concat(separator))
+                        pos++
+                    }
+                }
+                i += words.size
+            }
+        }
         var res: String = resultPinyinStrBuf.toString()
-        if(separate.size != 0) {
-            let lastIndex: Int64 = res.lastIndexOf(separate).getOrThrow()
+        if(separator.size != 0 && (res.charAt(res.size - 1).toString() == separator)) {
+            let lastIndex: Int64 = res.lastIndexOf(separator).getOrThrow()
             res = res.substring(0, lastIndex)
         }
         return res
     }
-    /**
-     * Get all unformmatted Tongyong Pinyin presentations of a single Chinese
-     * character (both Simplified and Tranditional)
+
+    /* 
+     * Obtain the first letter of the pinyin corresponding to the string
      *
-     * @param - ch the given Chinese character
-     * @return-  a String array contains all unformmatted Tongyong Pinyin
-     * presentations with tone numbers null for non-Chinese character
+     * @param str - Chinese characters
+     * @return String
      */
-    static public func toTongyongPinyinStringArray(ch: Char): Array<String> {
-        return convertToTargetPinyinStringArray(ch, PinyinRomanizationType.TONGYONG_PINYIN)
+    public static func getShortPinyin(str: String): String {
+        return convertToPinyinString(str, "", PinyinFormat.FIRST_LETTER)
     }
 
-    private static func convertToTargetPinyinStringArray(
-        ch: Char,
-        targetPinyinSystem: PinyinRomanizationType
-        ): Array<String> {
-        var hanyuPinyinStringArray: Array<String> = getUnformattedHanyuPinyinStringArray(ch)
-
-        if (hanyuPinyinStringArray.size != 0) {
-           var targetPinyinStringArray: Array<String> = Array<String>(hanyuPinyinStringArray.size, item: "")
-            var i: Int64 = 0
-            do {
-                targetPinyinStringArray[i] =
-                    PinyinRomanizationTranslator.convertRomanizationSystem(
-                        hanyuPinyinStringArray[i],
-                        PinyinRomanizationType.HANYU_PINYIN,
-                        targetPinyinSystem
-                    )
-                i++
-            } while(i < hanyuPinyinStringArray.size)
-            return targetPinyinStringArray
-        } else {
-            return ARR_EMPTY
-        }
-        return ARR_EMPTY   
-    }
-
-    private static func getUnformattedHanyuPinyinStringArray(ch: Char): Array<String> {
-        return ChineseToPinyinResource.getInstance().getHanyuPinyinStringArray(ch)
+    /* 
+     * 判断一个汉字是否为多音字
+     *
+     * @param c - Chinese characters
+     * @return Bool
+     */
+    public static func hasMultiPinyin(c: Char): Bool {
+        if(!ChineseHelper.isChinese(c)) {
+            throw Exception("Please enter a Chinese character")
+        } 
+        var pinyin: String = PINYIN_TABLE[c.toString()]
+        return pinyin.split(',').size > 1
     }
 
     /**
-     * Get all unformmatted Hanyu Pinyin presentations of a single Chinese
-     * character (both Simplified and Tranditional)
-     * 
-     * For example,  If the input is '间', the return will be an array with
-     * two Hanyu Pinyin strings:  "jian1"  "jian4"  If the
-     * input is '李', the return will be an array with single Hanyu Pinyin
-     * string:  "li3"
-     * 
-     * Special Note: If the return is "none0", that means the input
-     * Chinese character exists in Unicode CJK talbe, however, it has no
-     * pronounciation in Chinese
+     * Add Pinyin dictionary
      *
-     * @param ch - the given Chinese character
-     * @return Array<String> - a String array contains all unformmatted Hanyu Pinyin
-     * presentations with tone numbers; null for non-Chinese character
+     * @param dict - Pinyin dictionary
+     * @return Unit
      */
-    static public func toHanyuPinyinStringArray(ch: Char): Array<String> {
-        return getUnformattedHanyuPinyinStringArray(ch)
+    public static func addPinyinDictResource(dict: HashMap<String, String>): Unit {
+        PINYIN_TABLE.putAll(dict)
     }
 
     /**
-     * Get all Hanyu Pinyin presentations of a single Chinese character (both
-     * Simplified and Tranditional)
-     * 
-     * For example, If the input is '间', the return will be an array with
-     * two Hanyu Pinyin strings:"jian1" "jian4"  If the
-     * input is '李', the return will be an array with single Hanyu Pinyin
-     * string:  "li3"
-     * 
-     * Special Note: If the return is "none0", that means the input
-     * Chinese character is in Unicode CJK talbe, however, it has no
-     * pronounciation in Chinese
+     * Add MutilPinyin dictionary
      *
-     * @param ch - the given Chinese character
-     * @param outputFormat -  describes the desired format of returned Hanyu Pinyin String
-     * @return Array<String> - a String array contains all Hanyu Pinyin presentations with tone
-     *                         numbers; return empty string for non-Chinese character
-     * @throws BadHanyuPinyinOutputFormatCombination if certain combination of output formats happens
+     * @param dict - MutilPinyin dictionary
+     * @return Unit
      */
-    static public func toHanyuPinyinStringArray(ch: Char, outputFormat: HanyuPinyinOutputFormat): Array<String> {
-        return getFormattedHanyuPinyinStringArray(ch, outputFormat)
-    }
-
-    static private func getFormattedHanyuPinyinStringArray(ch: Char, outputFormat: HanyuPinyinOutputFormat): Array<String> {
-        var pinyinStrArray: Array<String> = getUnformattedHanyuPinyinStringArray(ch)
-
-        if (pinyinStrArray.size != 0) {
-            for (i in 0..pinyinStrArray.size) {
-                pinyinStrArray[i] = PinyinFormatter.formatHanyuPinyin(pinyinStrArray[i], outputFormat)
-            }
-            return pinyinStrArray
-        }
-        return ARR_EMPTY
+    public static func addMutilPinyinDictResource(dict: HashMap<String, String>): Unit {
+        MUTIL_PINYIN_TABLE.putAll(dict)   
     }
 }
