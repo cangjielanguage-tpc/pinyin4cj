@@ -1,11 +1,11 @@
 [
     {
-        "Name": " pinyin4j",
-        "License": " GNU General Public License version 2.0 (GPLv2) ",
+        "Name": " pinyin4js",
+        "License": " MIT License",
         "License File": " LICENSE ",
-        "Version Number": " v2.5.0 ",
-        "Owner": " Li Min, Liu Yibo"
-        "Upstream URL": "https://pinyin4j.sourceforge.net/, https://github.com/belerweb/pinyin4j",
-        "Description": " Pinyin4j is a popular Java library supporting convertion between Chinese characters and most popular Pinyin systems."
+        "Version Number": " v0.0.1 ",
+        "Owner": " Kaifuny "
+        "Upstream URL": "https://github.com/Kaifuny/pinyin4js",
+        "Description": " A opensource javascript library for converting chinese to pinyin。"
     }
 ]
