@@ -53,9 +53,6 @@ public class ChineseHelper {
      * @return String - Simplified Chinese
      */
     public static func convertToSimplifiedChinese(str: String): String {
-        if(str.size == 0) {
-            throw Exception("Provide words or sentences to be converted")
-        }
         var result: String = ""
         for(i in 0..str.size) {
             var c: Char = str.charAt(i)
@@ -71,9 +68,6 @@ public class ChineseHelper {
      * @return String - Traditional Chinese
      */
     public static func convertToTraditionalChinese(str: String): String {
-        if(str.size == 0) {
-            throw Exception("Provide words or sentences to be converted")
-        }
         var result: String = ""
         for(i in 0..str.size) {
             var c: Char = str.charAt(i)

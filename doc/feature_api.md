@@ -2,158 +2,331 @@
 
 ## 介绍
 
-Pinyin4j 是一个支持将汉字转换成拼音的三方库，输出的拼音格式可以自定义设置。
+Pinyin4cj 是一个支持将汉字转换成拼音的三方库，输出的拼音格式可以自定义设置。
 
-## 1 中文转换到汉语拼音/通用拼音，支持 Unicode 格式的字符 ü、声调符号和大小写格式输出
+## 1 中文转换到汉语拼音，支持多音字
 
 前置条件：NA 
 
 场景：
 
-1. 支持常用简体/繁体中文字符转换成拼音
-2. 支持常见多音字转换成拼音
-3. 支持词、句转换成拼音
-4. 支持转换通用拼音
-5. 支持 Unicode 格式的字符 ü、支持声调符号、支持大小写
+1. 支持常用简体/繁体互转
+2. 支持词、句转换成拼音，支持常见多音字的识别，其中包括词组、成语、地名等，支持繁体的识别
+3. 支持Unicode格式的字符ü、支持声调符号、支持拼音首字母的输出格式、
+4. 支持添加自定义字典
 
-约束：在词库中包含文字才能转换，字符ü、声调符号、大小写只对汉语拼音有效
+约束：在词库中包含文字才能转换，字符ü、声调符号、只对汉语拼音有效
 
 依赖：
 
-1. 需要 xml 文件解析/txt 文件解析
+1. 需要 txt 文件解析
 
 性能：支持版本几何性能持平
 
 可靠性：NA
 
-### 1.1 支持词、句转换成拼音
+### 1.1 支持常用简体/繁体中文字符互转
 
-可以输入词语或者句子，将可识别的汉字转换成拼音格式。
+可以将输入的繁体字符串(或简体字符串)转换成简体字符串(或繁体字符串)。
 
 #### 1.1.1 主要接口
 
 ```cangjie
-public class PinyinHelper {
+public class ChineseHelper {
 
     /**
-     * 词句转拼音
+     * 将包含繁体的字符串转换成简体字符串
+     * 若有些繁体字转换不成预期的简体字，用户可自定义中文词典
      * 
-     * 参数 str - 要转换的词或句
-     * 参数 outputFormat - 返回的汉语拼音字符串的所需格式
-     * 参数 separate - 分隔符，附在汉字后面（不包括句尾最后一个汉字和非汉字）
-     * 参数 retain - 是否保留无法转换为拼音字符的字符
-     * 返回值 String - 返回转换后的拼音
+     * 参数 str - 要转换的字符串
+     * 返回值 String - 返回转换后的简体字符串
+     *                若 str 为空字符串，返回结果为空字符串
      */
-    static public func toHanYuPinyinString(str: String, 
-                                           outputFormat: HanyuPinyinOutputFormat,
-                                           separate: String, 
-                                           retain: Bool): String 
+    public static func convertToSimplifiedChinese(str: String): String 
+
+    /**
+     * 将包含简体的字符串转换成繁体字符串
+     * 若有些简体字转换不成预期的繁体字，用户可自定义中文词典
+     *
+     * 参数 str - 要转换的字符串
+     * 返回值 String - 返回转换后的繁体字符串
+     *                若 str 为空字符串，返回结果为空字符串
+     */
+    public static func convertToTraditionalChinese(str: String): String   
 }
 ```
 
 #### 1.1.2 示例
 
+##### 繁体转简体
+
 ```cangjie
 from pinyin4cj import pinyin4cj.*
 
 main() {
-    var defaultFormat: HanyuPinyinOutputFormat = HanyuPinyinOutputFormat()
-    defaultFormat.setToneType(HanyuPinyinToneType.WITH_TONE_MARK)
-    defaultFormat.setVCharType(HanyuPinyinVCharType.WITH_U_UNICODE)
-    var pinyinArray: String = PinyinHelper.toHanYuPinyinString("草长莺飞", defaultFormat, ",", false)
-    println(pinyinArray)
+    var pinyin: String = ChineseHelper.convertToSimplifiedChinese("臺，喪，麗")
+    println(pinyin)
     return 0
 }
 ```
 执行结果如下：
 
 ```
-căo,zhăng,yīng,fēi
+台，丧，丽
+```
+
+##### 简体转繁体
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = ChineseHelper.convertToTraditionalChinese("我是中国人")
+    println(pinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+我是中國人
+```
+
+### 1.2 支持词、句转换成拼音，支持常见多音字和繁体的识别
+
+可以将包含多音字或繁体字的词或句转成拼音
+
+#### 1.2.1 主要接口
+
+```cangjie
+public class PinyinHelper {
+
+    /**
+     * 将包含多音字或繁体字的词或句转成拼音
+     * 若有些字拼音没有达到预期效果，用户可自定义拼音词典
+     * 
+     * 参数 str - 要转换的字符串
+     * 参数 separator - 分隔符
+     * 返回值 String - 返回转换后的简体字符串
+     */
+    public static func convertToPinyinString(str: String, separator: String): String
+}
+```
+
+#### 1.2.2 示例
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = PinyinHelper.convertToPinyinString("我是中国共产主义接班人。", " ")
+    println(pinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+wǒ shì zhōng guó gòng chǎn zhǔ yì jiē bān rén 。
+```
+
+### 1.3 支持 Unicode 格式的字符ü、支持声调符号、支持拼音首字母的输出格式
+
+可以将包含多音字或繁体字的词或句转成拼音，可以设置拼音输出格式
+
+#### 1.3.1 主要接口
+
+```cangjie
+public class PinyinHelper {
+
+    /**
+     * 将包含多音字或繁体字的词或句转成拼音
+     * 若有些字拼音没有达到预期效果，用户可自定义拼音词典
+     * 
+     * 参数 str - 要转换的字符串
+     * 参数 separator - 分隔符
+     * 参数 format - 输出拼音格式
+     * 返回值 String - 返回转换后的简体字符串
+     */
+    public static func convertToPinyinString(str: String, 
+                                            separator: String, 
+                                            format: PinyinFormat): String
+}
+```
+
+#### 1.3.2 示例
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = PinyinHelper.convertToPinyinString("我是中国共产主义接班人。", " ", PinyinFormat.WITH_TONE_NUMBER)
+    println(pinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+wo3 shi4 zhong1 guo2 gong4 chan3 zhu3 yi4 jie1 ban1 ren2 。
+```
+
+
+### 1.4 支持添加自定义字典
+
+若繁体字和简体字互转没有达到预期效果，用户可添加自定义中文字典
+
+若词句转拼音结果没有达到预期效果，用户可添加自定义拼音字典和拼音组合字典
+
+#### 1.4.1 主要接口
+
+```cangjie
+public class PinyinHelper {
+
+    /**
+     * 用户添加自定义拼音字典
+     * 
+     * 参数 dict - 添加拼音字典
+     * 返回值 Unit
+     */
+    public static func addPinyinDictResource(dict: HashMap<String, String>): Unit
+
+    /**
+     * 用户添加自定义拼音组合字典
+     * 
+     * 参数 dict - 添加拼音组合字典
+     * 返回值 Unit
+     */
+    public static func addMutilPinyinDictResource(dict: HashMap<String, String>): Unit
+}
+
+public class ChineseHelper {
+
+    /**
+     * 用户添加自定义中文字典
+     * 
+     * 参数 dict - 添加拼中文字典
+     * 返回值 Unit
+     */
+    public static func addChineseDictResource(dict: HashMap<String, String>): Unit
+}
+
+```
+
+#### 1.4.2 示例
+
+##### 自定义拼音字典
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    let map: HashMap<String, String> = HashMap<String, String>([("上", "shǎng")])
+    PinyinHelper.addPinyinDictResource(map)
+    var pinyin: String = PinyinHelper.convertToPinyinString("上午", " ", PinyinFormat.WITH_TONE_MARK)
+    println(pinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+shǎng wǔ
+```
+##### 自定义拼音组合字典
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    let map: HashMap<String, String> = HashMap<String, String>([("阿弥陀佛", "ā,mí,tuó,fó")])
+    PinyinHelper.addMutilPinyinDictResource(map)
+    var pinyin: String = PinyinHelper.convertToPinyinString("阿弥陀佛", " ", PinyinFormat.WITH_TONE_MARK)
+    println(pinyin)
+}
+```
+执行结果如下：
+
+```
+ā mí tuó fó
+```
+
+##### 自定义中文字典
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    let map: HashMap<Char, Char> = HashMap<Char, Char>([('癥', '症')])
+    ChineseHelper.addChineseDictResource(map)
+    var pinyin: String = ChineseHelper.convertToSimplifiedChinese("癥")
+    println(pinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+症
 ```
 
 ## 2 其他接口
 
-### 2.1 HanyuPinyinVCharType
+### 2.1 ChineseHelper
 
-定义字符 ü 的输出格式
+中文转换器
 
 ```cangjie
-public class HanyuPinyinVCharType {
+public class ChineseHelper {
 
     /**
-     * ü 的输出为 u：
-     */
-    public static var WITH_U_AND_COLON: HanyuPinyinVCharType = HanyuPinyinVCharType("WITH_U_AND_COLON")
-
-    /**
-     * ü 的输出为 v
-     */
-    public static var WITH_V: HanyuPinyinVCharType = HanyuPinyinVCharType("WITH_V")
-
-    /**
-     * ü 的输出为 ü
-     */
-    public static var  WITH_U_UNICODE: HanyuPinyinVCharType = HanyuPinyinVCharType("WITH_U_UNICODE")
-
-    /**
-     * 获取字符的输出格式
+     * 判断字符是否是繁体字
      *
-     * 返回值 String
+     * 参数 c - 字符
+     * 返回值 Bool
      */
-    public func getName(): String  
+    public static func isTraditionalChinese(c: Char): Bool 
+
+    /**
+     * 判断字符是否是汉字
+     *
+     * 参数 c - 字符
+     * 返回值 Bool
+     */
+    public static func isChinese(c: Char): Bool
+
+    /**
+     * 判断字符串是否包含汉字
+     *
+     * 参数 str - 字符串
+     * 返回值 Bool
+     */
+    public static func containsChinese(str: String): Bool
 }
 ```
 
-### 2.2 HanyuPinyinCaseType
+### 2.2 PinyinFormat
 
-定义汉语拼音输出为大小写字母
+定义输出汉语拼音格式
 
-```cangjie
-public class HanyuPinyinCaseType {
+| 格式 | 结果 | 
+| --------- | -----|
+|  WITH_TONE_MARK   | lǚ   |
+|  WITHOUT_TONE     | lü   |
+|  WITH_TONE_NUMBER | lü3  |
+|  FIRST_LETTER     | l    |
 
-    /**
-     * 汉语拼音输出为大写字母
-     */
-    public static var UPPERCASE: HanyuPinyinCaseType = HanyuPinyinCaseType("UPPERCASE")
-
-    /**
-     * 汉语拼音输出为小写字母
-     */
-    public static var LOWERCASE: HanyuPinyinCaseType = HanyuPinyinCaseType("LOWERCASE")
-
-    /**
-     * 获取字符的输出格式
-     *
-     * 返回值 String
-     */
-    public func getName(): String
-}
-```
-### 2.3 HanyuPinyinToneType
-
-定义汉语拼音的声调输出格式
 
 ```cangjie
-public class HanyuPinyinToneType {
 
-    /**
-     * 该选项表示汉语拼音输出时带有声调数字
-     * 用 1、2、3、4、5 表示 阴平（ˉ）、阳平（ˊ）、上声（ˇ）去声（ˋ）、轻声（不标调）
-     */
-    public static var  WITH_TONE_NUMBER: HanyuPinyinToneType = HanyuPinyinToneType("WITH_TONE_NUMBER")
+public enum PinyinFormat {
+    | WITH_TONE_MARK
+    | WITHOUT_TONE
+    | WITH_TONE_NUMBER
+    | FIRST_LETTER
 
-    /**
-     * 该选项表示输出的汉语拼音没有声调数字或声调标记
-     */
-    public static var  WITHOUT_TONE: HanyuPinyinToneType = HanyuPinyinToneType("WITHOUT_TONE")
-
-    /**
-     * 该选项表示汉语拼音输出时带有声调标记，例 ā á ǎ à
-     */
-    public static var  WITH_TONE_MARK: HanyuPinyinToneType = HanyuPinyinToneType("WITH_TONE_MARK")
-
-    /**
-     * 获取字符的输出格式
+    /*
+     * 获取格式名称
      *
      * 返回值 String
      */
@@ -161,176 +334,29 @@ public class HanyuPinyinToneType {
 }
 ```
 
-### 2.4 HanyuPinyinOutputFormat
+### 2.3 PinyinHelper
 
-定义如何输出汉语拼音格式
-
-汉语拼音输出为小写字母
-
-| Combination | WITH_U_AND_COLON | WITH_V|WITH_U_UNICODE |
-| --------- | -----|----- |---- |
-|  WITH_TONE_NUMBER | lu:3            |lv3             |lü3 |
-|  WITHOUT_TONE     | lu:             |lv              |lü  |
-|  WITH_TONE_MARK   | throw BadHanyuPinyinOutputFormatCombination |throw Exception |lǚ  |
-
-汉语拼音输出为大写字母
-| Combination | WITH_U_AND_COLON | WITH_V|WITH_U_UNICODE |
-| --------- | -----|----- |---- |
-|  WITH_TONE_NUMBER | LU:3            |LV3             |LÜ3 |
-|  WITHOUT_TONE     | LU:             | LV             |LÜ  |
-|  WITH_TONE_MARK   | throw BadHanyuPinyinOutputFormatCombination |throw Exception |LǙ  |
-
-```cangjie
-
-public class HanyuPinyinOutputFormat {
-
-    /**
-     * 初始化汉语拼音输出格式
-     * - HanyuPinyinVCharType.WITH_U_AND_COLON
-     * - HanyuPinyinCaseType.LOWERCASE
-     * - HanyuPinyinToneType.WITH_TONE_NUMBER
-     */
-    public init()
-
-    /**
-     * 默认汉语拼音输出格式
-     * - HanyuPinyinVCharType.WITH_U_AND_COLON
-     * - HanyuPinyinCaseType.LOWERCASE
-     * - HanyuPinyinToneType.WITH_TONE_NUMBER
-     *
-     * 返回值 Unit
-     */
-    public func restoreDefault(): Unit
-
-    /**
-     * 获取输出汉语拼音大小写格式
-     *
-     * 返回值 HanyuPinyinCaseType
-     */
-    public func getCaseType(): HanyuPinyinCaseType
-
-    /**
-     * 设置输出汉语拼音大小写格式
-     *
-     * 参数 caseType - HanyuPinyinCaseType
-     * 返回值 Unit
-     */
-    public func setCaseType(caseType: HanyuPinyinCaseType): Unit
-
-    /**
-     * 获取输出汉语拼音声调格式
-     *
-     * 返回值 HanyuPinyinToneType
-     */
-    public func getToneType(): HanyuPinyinToneType
-
-    /**
-     * 设置输出汉语拼音声调格式
-     *
-     * 参数 toneType - HanyuPinyinToneType
-     * 返回值 Unit
-     */
-    public func setToneType(toneType: HanyuPinyinToneType): Unit
-
-    /**
-     * 获取输出汉语拼音 u 的格式
-     *
-     * 返回值 HanyuPinyinVCharType
-     */
-    public func getVCharType(): HanyuPinyinVCharType
-
-    /**
-     * 获取输出汉语拼音 u 格式
-     *
-     * 参数 charType - HanyuPinyinVCharType
-     * 返回值 Unit
-     */
-    public func setVCharType(charType: HanyuPinyinVCharType): Unit
-}
-```
-
-### 2.5 Trie
-
-汉语拼音节点树
+拼音转换器
 
 ```
-public class Trie {
+public class PinyinHelper {
 
     /**
-     * 获取本节点拼音
+     * 获取词句首字母格式的拼音
      *
+     * 参数 str - 字符串
      * 返回值 String
      */
-    public func getPinyin(): String
+    public static func getShortPinyin(str: String): String
 
     /**
-     * 设置节点拼音
+     * 判断字符是否为多音字
      *
-     * 参数 pinyin - String
-     * 返回值 Unit
+     * 参数 c - 字符
+     * 返回值 Bool
      */
-    public func setPinyin(pinyin: String): Unit
+    public static func hasMultiPinyin(c: Char): Bool
 
-    /**
-     * 获取下一个节点
-     *
-     * 返回值 ?Trie
-     */
-    public func getNextTire(): ?Trie
-
-    /**
-     * 设置下一个节点
-     *
-     * 参数 nextTire - Trie
-     */
-    public func setNextTire(nextTire: Trie): Unit
-
-    /**
-     * 加载拼音
-     *
-     * 参数 inStream - 拼音文件输入流，文件格式见源码目录 resource
-     * 返回值 Unit
-     */
-    public func load(inStream: InputStream): Unit
-
-    /**
-     * 加载多音字拼音词典
-     *
-     * 参数 inStream - 拼音文件输入流，文件格式见源码目录 resource
-     * 返回值 Unit
-     */
-    public func loadMultiPinyin(inStream: InputStream): Unit
-
-    /**
-     * 获取十六进制字符的节点树
-     *
-     * 参数 hexString - 十六进制字符串
-     * 返回值 ?Trie
-     */
-    public func get(hexString: String): ?Trie
-
-    /**
-     * 往树种添加拼音字符串
-     *
-     * 参数 s - 拼音字符串
-     * 参数 trie - Trie
-     * 返回值 Unit
-     */
-    public func put(s: String, trie: Trie): Unit
 }
 ```
 
-### 2.6 BadHanyuPinyinOutputFormatCombination
-
-拼音格式异常类
-
-```
-public class BadHanyuPinyinOutputFormatCombination <: Exception {
-    /**
-     * 初始化
-     *
-     * 参数 messages - 异常提示字符串
-     */    
-    public init(messages: String)
-}
-```

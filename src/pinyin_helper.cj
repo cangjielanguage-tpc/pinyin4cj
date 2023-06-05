@@ -187,6 +187,17 @@ public class PinyinHelper {
     }
 
     /* 
+     * Convert strings into corresponding pinyin formats
+     *
+     * @param str - Chinese characters
+     * @param separator - Separator
+     * @return String
+     */
+    public static func convertToPinyinString(str: String, separator: String): String {
+        return convertToPinyinString(str, separator, PinyinFormat.WITH_TONE_MARK)
+    }
+
+    /* 
      * Obtain the first letter of the pinyin corresponding to the string
      *
      * @param str - Chinese characters
