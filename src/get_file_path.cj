@@ -8,6 +8,9 @@ package pinyin4cj
 from std import os.*
 from std import os.posix.*
 
+/*
+ * Get File Path
+ */
 func getFilePath(): Path {
     match(getEnv("LD_LIBRARY_PATH")) {
         case Some(str) =>
