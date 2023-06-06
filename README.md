@@ -15,45 +15,35 @@
 Pinyin4j 是一个支持将汉字转换成拼音的三方库，输出的拼音格式可以自定义设置。
 
     参考地址：
-    https://pinyin4j.sourceforge.net/ 原始版本
-    https://github.com/belerweb/pinyin4j Maven 版本
+    https://github.com/Kaifuny/pinyin4js
 
 ### 特性
 
-- 🚀 支持 Unicode 格式的字符 ü、支持声调符号、支持大小写
+- 🚀 支持常用简体/繁体中文字符互转
 
-- 💪 支持转换通用拼音
+- 💪 支持词、句转换成拼音，支持常见多音字和繁体的识别
 
-- 🛠️ 支持转换通用拼音
+- 🛠️ 支持 Unicode 格式的字符 ü、支持声调符号、支持拼音首字母的输出格式
 
-- 🌍 支持常见多音字转换成拼音
-
-- 💡 支持常用简体/繁体中文字符转换成拼音
+- 🌍 支持添加自定义字典
 
 ## 软件架构
 
-![design](./doc/assets/pinyin4cj_design.png)
+![design](./doc/assets/pinyin4cj.png)
 
 ### 源码目录
-
 
 ```shell
 .
 ├── doc
 ├── src
-│   ├── bad_hanyu_pinyin_output_format_combination.cj
-│   ├── chinese_to_pinyin_resource.cj
+│   ├── chinese_helper.cj
+│   ├── chinese_dict.cj
 │   ├── get_file_path.cj
-│   ├── hanyu_pinyi_vchar_type.cj
-│   ├── hanyu_pinyin_case_type.cj
-│   ├── hanyu_pinyin_output_format.cj
-│   ├── hanyu_pinyin_tone_type.cj
-│   ├── hashtable.cj
-│   ├── pinyin_formatter.cj
+│   ├── mutil_pinyin.dict.cj
+│   ├── pinyin_format.cj
 │   ├── pinyin_helper.cj
-│   ├── pinyin_romanization_type.cj
-│   ├── resource_helper.cj
-│   ├── trie.cj
+│   ├── pinyin_resource.cj
 └── test
 │   ├── HLT
 │   ├── LLT
@@ -91,7 +81,7 @@ pinyin4cj_build.bat
 
 ### 功能示例
 
-#### 词句转拼音示例
+#### 繁体转简体
 
 示例代码如下：
 
@@ -99,11 +89,8 @@ pinyin4cj_build.bat
 from pinyin4cj import pinyin4cj.*
 
 main() {
-    var defaultFormat: HanyuPinyinOutputFormat = HanyuPinyinOutputFormat()
-    defaultFormat.setToneType(HanyuPinyinToneType.WITH_TONE_MARK)
-    defaultFormat.setVCharType(HanyuPinyinVCharType.WITH_U_UNICODE)
-    var pinyinArray: String = PinyinHelper.toHanYuPinyinString("我们是中国共产主义接班人", defaultFormat, ",", false)
-    println(pinyinArray)
+    var pinyin: String = ChineseHelper.convertToSimplifiedChinese("臺，喪，麗")
+    println(pinyin)
     return 0
 }
 ```
@@ -111,11 +98,136 @@ main() {
 执行结果如下：
 
 ```shell
-wŏ,men,shì,zhōng,guó,gòng,chăn,zhŭ,yì,jiē,bān,rén
+台，丧，丽
+```
+
+#### 简体转繁体
+
+示例代码如下：
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = ChineseHelper.convertToTraditionalChinese("我是中国人")
+    println(pinyin)
+    return 0
+}
+```
+
+执行结果如下：
+
+```shell
+我是中國人
+```
+
+#### 词、句转换成拼音
+
+示例代码如下：
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = PinyinHelper.convertToPinyinString("我是中国共产主义接班人。", " ")
+    println(pinyin)
+    return 0
+}
+```
+
+执行结果如下：
+
+```shell
+wǒ shì zhōng guó gòng chǎn zhǔ yì jiē bān rén 。
+```
+
+#### 自定义输出格式
+
+示例代码如下：
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = PinyinHelper.convertToPinyinString("我是中国共产主义接班人。", " ", PinyinFormat.WITH_TONE_NUMBER)
+    println(pinyin)
+    return 0
+}
+```
+
+执行结果如下：
+
+```shell
+wo3 shi4 zhong1 guo2 gong4 chan3 zhu3 yi4 jie1 ban1 ren2 。
+```
+
+#### 添加自定义拼音字典
+
+示例代码如下：
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    let map: HashMap<String, String> = HashMap<String, String>([("上", "shǎng")])
+    PinyinHelper.addPinyinDictResource(map)
+    var pinyin: String = PinyinHelper.convertToPinyinString("上午", " ", PinyinFormat.WITH_TONE_MARK)
+    println(pinyin)
+    return 0
+}
+```
+
+执行结果如下：
+
+```shell
+shǎng wǔ
+```
+
+#### 添加自定义拼音组合字典
+
+示例代码如下：
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    let map: HashMap<String, String> = HashMap<String, String>([("阿弥陀佛", "ā,mí,tuó,fó")])
+    PinyinHelper.addMutilPinyinDictResource(map)
+    var pinyin: String = PinyinHelper.convertToPinyinString("阿弥陀佛", " ", PinyinFormat.WITH_TONE_MARK)
+    println(pinyin)
+}
+```
+
+执行结果如下：
+
+```shell
+ā mí tuó fó
+```
+
+#### 添加自定义中文字典
+
+示例代码如下：
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    let map: HashMap<Char, Char> = HashMap<Char, Char>([('癥', '症')])
+    ChineseHelper.addChineseDictResource(map)
+    var pinyin: String = ChineseHelper.convertToSimplifiedChinese("癥")
+    println(pinyin)
+    return 0
+}
+```
+
+执行结果如下：
+
+```shell
+症
 ```
 
 ## 开源协议
-GNU LIBRARY GENERAL PUBLIC LICENSE
+MIT License
 
 ## 参与贡献
 
