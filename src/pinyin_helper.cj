@@ -98,7 +98,7 @@ public class PinyinHelper {
      * @param format - format
      * @return Array<String>
      */
-    static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String> {  
+    public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String> {  
         var pinyinArray: Array<String> = Array<String>()
         if(let Some(v) = PINYIN_TABLE.get(c.toString())) {
             var arr: Array<String> = Array<String>()
@@ -146,7 +146,7 @@ public class PinyinHelper {
                     var pinyinArray: Array<String> = convertToPinyinArray(c, format)
                     if(pinyinArray.size > 0) {
                         if(format.getName() == "FIRST_LETTER"){
-                            resultPinyinStrBuf.append(pinyinArray[0].charAt(0).toString())
+                            resultPinyinStrBuf.append(pinyinArray[0].charAt(0).toString().concat(separator))
                             pos++
                         }else{
                             resultPinyinStrBuf.append(pinyinArray[0].concat(separator))
@@ -168,7 +168,7 @@ public class PinyinHelper {
                 var pinyinArray: Array<String> = formatPinyin(MUTIL_PINYIN_TABLE[words], format)
                 for(j in 0..pinyinArray.size) {
                     if(format.getName() == "FIRST_LETTER"){
-                        resultPinyinStrBuf.append(pinyinArray[j].charAt(0).toString())
+                        resultPinyinStrBuf.append(pinyinArray[j].charAt(0).toString().concat(separator))
                         pos++
                     }else{
                         resultPinyinStrBuf.append(pinyinArray[j].concat(separator))
