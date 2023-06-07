@@ -10,12 +10,14 @@ Pinyin4cj 是一个支持将汉字转换成拼音的三方库，输出的拼音�
 
 场景：
 
-1. 支持常用简体/繁体互转
-2. 支持词、句转换成拼音，支持常见多音字的识别，其中包括词组、成语、地名等，支持繁体的识别
-3. 支持Unicode格式的字符ü、支持声调符号、支持拼音首字母的输出格式、
-4. 支持添加自定义字典
+1. 支持词、句转换成拼音
+2. 支持常用简体/繁体中文字符转换成拼音
+3. 支持常见多音字符转换成拼音
+4. 支持Unicode格式的字符ü、支持声调符号、支持首字母格式
+5. 支持常用简体、繁体中文字符互转
+6. 支持添加自定义字典
 
-约束：在词库中包含文字才能转换，字符ü、声调符号、只对汉语拼音有效
+约束：在词库中包含文字才能转换，字符 ü、声调符号、首字母只对汉语拼音有效
 
 依赖：
 
@@ -92,7 +94,7 @@ main() {
 我是中國人
 ```
 
-### 1.2 支持词、句转换成拼音，支持常见多音字和繁体的识别
+### 1.2 支持词、句转换成拼音
 
 可以将包含多音字或繁体字的词或句转成拼音
 
@@ -269,6 +271,82 @@ main() {
 ```
 症
 ```
+
+### 1.5 支持常见多音字转换成拼音
+
+将多音字的转换成拼音集合，集合中包含所有读音
+
+#### 1.5.1 主要接口
+
+```cangjie
+public class PinyinHelper {
+
+    /**
+     * 常用多音字的转换成拼音集合
+     * 
+     * 参数 c - 字符
+     * 参数 format - 输出格式
+     * 返回值 Unit
+     */
+    public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String>
+}
+```
+
+#### 1.5.2 示例
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = PinyinHelper.convertToPinyinArray('长', PinyinFormat.WITH_TONE_MARK)
+    println(pinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+["cháng", "zhǎng"]
+```
+
+
+### 1.6 支持常用简体/繁体中文字符转换成拼音
+
+获取单个汉字（简体和繁体）的所有指定格式的汉语拼音
+
+#### 1.6.1 主要接口
+
+```cangjie
+public class PinyinHelper {
+
+    /**
+     * 常用多音字的转换成拼音集合
+     * 
+     * 参数 c - 字符
+     * 参数 format - 输出格式
+     * 返回值 Unit
+     */
+    public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String>
+}
+```
+
+#### 1.6.2 示例
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = PinyinHelper.convertToPinyinArray('嚴', PinyinFormat.WITH_TONE_MARK)
+    println(pinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+["yán"]
+```
+
 
 ## 2 其他接口
 

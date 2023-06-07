@@ -19,13 +19,17 @@ Pinyin4j 是一个支持将汉字转换成拼音的三方库，输出的拼音�
 
 ### 特性
 
-- 🚀 支持常用简体/繁体中文字符互转
+- 🚀 支持词、句转换成拼音
 
-- 💪 支持词、句转换成拼音，支持常见多音字和繁体的识别
+- 💪 支持常用简体/繁体中文字符转换成拼音
 
-- 🛠️ 支持 Unicode 格式的字符 ü、支持声调符号、支持拼音首字母的输出格式
+- 🛠️ 支持常见多音字符转换成拼音
 
-- 🌍 支持添加自定义字典
+- 🌍 支持Unicode格式的字符ü、支持声调符号、支持首字母格式
+
+- 💪 支持常用简体、繁体中文字符互转
+
+- 🚀 支持添加自定义字典
 
 ## 软件架构
 
@@ -224,6 +228,44 @@ main() {
 
 ```shell
 症
+```
+
+#### 多音字转拼音集合
+
+示例代码如下：
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = PinyinHelper.convertToPinyinArray('长', PinyinFormat.WITH_TONE_MARK)
+    println(pinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+["cháng", "zhǎng"]
+```
+
+#### 繁简体转拼音
+
+示例代码如下：
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = PinyinHelper.convertToPinyinArray('嚴', PinyinFormat.WITH_TONE_MARK)
+    println(pinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+["yán"]
 ```
 
 ## 开源协议
