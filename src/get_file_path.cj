@@ -8,20 +8,37 @@ package pinyin4cj
 from std import os.*
 from std import os.posix.*
 
-/*
- * Get File Path
- */
+@when[os == "linux"]
 func getFilePath(): Path {
     match(getEnv("LD_LIBRARY_PATH")) {
         case Some(str) =>
             if (str.isEmpty() && str.size < 0 && !str.contains(":")) {
-                throw NoneValueException("")
+                throw NoneValueException("Path is empty")
             }
             let paths: Array<String> = str.split(":")
             for (path in paths where path.contains("build")) {
                 return Path(path)
             }
-            throw NoneValueException("")
+            throw NoneValueException("Unable to find the build directory")
         case None => throw NoneValueException("")
     }
 }
+
+@when[os == "windows"]
+func getFilePath(): Path {
+    match(getEnv("Path")) {
+        case Some(str) =>
+            if (str.isEmpty() && str.size < 0 && !str.contains(";")) {
+                throw NoneValueException("Path is empty")
+            }
+            println(str)
+            let paths: Array<String> = str.split(";")
+            println(paths)
+            for (path in paths where path.contains("build")) {
+                return Path(path)
+            }
+            throw NoneValueException("Unable to find the build directory")
+        case None => throw NoneValueException("")
+    }
+}
+
