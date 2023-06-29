@@ -109,7 +109,7 @@ public class PinyinHelper {
      * 
      * 参数 str - 要转换的字符串
      * 参数 separator - 分隔符
-     * 返回值 String - 返回转换后的简体字符串
+     * 返回值 String - 返回转换后的拼音字符串
      */
     public static func convertToPinyinString(str: String, separator: String): String
 }
@@ -148,7 +148,7 @@ public class PinyinHelper {
      * 参数 str - 要转换的字符串
      * 参数 separator - 分隔符
      * 参数 format - 输出拼音格式
-     * 返回值 String - 返回转换后的简体字符串
+     * 返回值 String - 返回转换后的拼音字符串
      */
     public static func convertToPinyinString(str: String, 
                                             separator: String, 
@@ -286,7 +286,7 @@ public class PinyinHelper {
      * 
      * 参数 c - 字符
      * 参数 format - 输出格式
-     * 返回值 Unit
+     * 返回值 Array<String>
      */
     public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String>
 }
@@ -324,7 +324,7 @@ public class PinyinHelper {
      * 
      * 参数 c - 字符
      * 参数 format - 输出格式
-     * 返回值 Unit
+     * 返回值 Array<String>
      */
     public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String>
 }

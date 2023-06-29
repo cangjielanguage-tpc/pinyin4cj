@@ -101,6 +101,21 @@ public class PinyinHelper {
     public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String> {  
         var pinyinArray: Array<String> = Array<String>()
         if(let Some(v) = PINYIN_TABLE.get(c.toString())) {
+            if(format.getName() == "FIRST_LETTER") {
+                pinyinArray = formatPinyin(v, format)
+                for(i in 0..pinyinArray.size) {
+                   pinyinArray[i] = pinyinArray[i].charAt(0).toString()
+                }
+            } else {
+                pinyinArray = formatPinyin(v, format)
+            }
+        }
+        return pinyinArray
+    }
+
+    static func convertToPinyinArrays(c: Char, format: PinyinFormat): Array<String> {  
+        var pinyinArray: Array<String> = Array<String>()
+        if(let Some(v) = PINYIN_TABLE.get(c.toString())) {
             var arr: Array<String> = Array<String>()
             pinyinArray = formatPinyin(v, format)
         }
@@ -143,7 +158,7 @@ public class PinyinHelper {
             if(commonPrefixList.size == 0) {
                 var c: Char = string.charAt(i)
                 if(ChineseHelper.isChinese(c) || c == CHINESE_LING) {
-                    var pinyinArray: Array<String> = convertToPinyinArray(c, format)
+                    var pinyinArray: Array<String> = convertToPinyinArrays(c, format)
                     if(pinyinArray.size > 0) {
                         if(format.getName() == "FIRST_LETTER"){
                             resultPinyinStrBuf.append(pinyinArray[0].charAt(0).toString().concat(separator))
