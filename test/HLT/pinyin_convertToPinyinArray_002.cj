@@ -35,6 +35,6 @@ public class pinyin_convertToPinyinArray_002 {
     public func pinyin_convertToPinyinArray_010():Unit{
         var arrstr = PinyinHelper.convertToPinyinArray('稱', PinyinFormat.FIRST_LETTER)
         println("arrstr5 = ${arrstr}")
-        @Assert(arrstr.toString(),"[cheng, chen, cheng]")
+        @Assert(arrstr.toString(),"[c, c, c]")
     }
 }

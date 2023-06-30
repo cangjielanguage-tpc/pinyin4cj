@@ -35,6 +35,6 @@ public class pinyin_convertToPinyinArray_001 {
     public func pinyin_convertToPinyinArray_005():Unit{
         var arrstr = PinyinHelper.convertToPinyinArray('答', PinyinFormat.FIRST_LETTER)
         println("arrstr5 = ${arrstr}")
-        @Assert(arrstr.toString(),"[da, da]")
+        @Assert(arrstr.toString(),"[d, d]")
     }
 }
