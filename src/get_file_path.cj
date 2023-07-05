@@ -8,7 +8,7 @@ package pinyin4cj
 from std import os.*
 from std import os.posix.*
 
-@when[os == "linux"]
+@When[os == "linux"]
 func getFilePath(): Path {
     match(getEnv("LD_LIBRARY_PATH")) {
         case Some(str) =>
@@ -24,7 +24,7 @@ func getFilePath(): Path {
     }
 }
 
-@when[os == "windows"]
+@When[os == "windows"]
 func getFilePath(): Path {
     match(getEnv("Path")) {
         case Some(str) =>
