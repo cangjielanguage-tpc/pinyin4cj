@@ -16,10 +16,10 @@ func getFilePath(): Path {
                 throw NoneValueException("Path is empty")
             }
             let paths: Array<String> = str.split(":")
-            for (path in paths where path.contains("build")) {
+            for (path in paths where path.contains("pinyin4cj")) {
                 return Path(path)
             }
-            throw NoneValueException("Unable to find the build directory")
+            throw NoneValueException("Unable to find the pinyin4cj directory")
         case None => throw NoneValueException("")
     }
 }
@@ -34,10 +34,10 @@ func getFilePath(): Path {
             println(str)
             let paths: Array<String> = str.split(";")
             println(paths)
-            for (path in paths where path.contains("build")) {
+            for (path in paths where path.contains("pinyin4cj")) {
                 return Path(path)
             }
-            throw NoneValueException("Unable to find the build directory")
+            throw NoneValueException("Unable to find the pinyin4cj directory")
         case None => throw NoneValueException("")
     }
 }

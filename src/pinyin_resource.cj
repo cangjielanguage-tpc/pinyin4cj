@@ -18,7 +18,7 @@ class PinyinResource {
      */
     static func getPinyinResource(): HashMap<String, String> {
         var getFilePath: Path = getFilePath()
-        let resourceName: String = getFilePath.join("resource").join("pinyin.dict.txt").toString()
+        let resourceName: String = getFilePath.join("pinyin.dict.txt").toString()
         let file = File(resourceName, Open(true, false)) 
         let map = HashMap<String, String>(22000)
         var bufferedReader: StringReader = StringReader(file)
