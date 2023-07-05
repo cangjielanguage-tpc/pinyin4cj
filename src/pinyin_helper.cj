@@ -33,11 +33,11 @@ public class PinyinHelper {
             var originalPinyin: String = pinyinArray[i].replace("ü", "v")
             
             for(j in 0..originalPinyin.size) {
-                var originalChar: Char = originalPinyin.charAt(j)
+                var originalChar: Char = originalPinyin.get(j).getOrThrow()
                 if(UInt32(originalChar) < UInt32('a') || UInt32(originalChar) > UInt32('z')) {
                     var indexInAllMarked: Int64 = ALL_MARKED_VOWEL.indexOf(originalChar).getOrThrow()
                     var toneNumber: Int64 = indexInAllMarked % 4 + 1
-                    var replaceChar: Char = ALL_UNMARKED_VOWEL.charAt((indexInAllMarked - indexInAllMarked % 4) / 4)
+                    var replaceChar: Char = ALL_UNMARKED_VOWEL.get((indexInAllMarked - indexInAllMarked % 4) / 4).getOrThrow()
                     
                     pinyinArray[i] = originalPinyin.replace(originalChar, replaceChar).concat(toneNumber.toString()) 
                     hasMarkedChar = true
@@ -62,8 +62,8 @@ public class PinyinHelper {
         var s: String = str
         var pinyinArray: Array<String> = Array<String>()
         for(i in 0..ALL_MARKED_VOWEL.size) {
-            var originalChar: Char = ALL_MARKED_VOWEL.charAt(i)
-            var replaceChar: Char = ALL_UNMARKED_VOWEL.charAt((i - i % 4) / 4)
+            var originalChar: Char = ALL_MARKED_VOWEL.get(i).getOrThrow()
+            var replaceChar: Char = ALL_UNMARKED_VOWEL.get((i - i % 4) / 4).getOrThrow()
             s = s.replace(originalChar.toString(), replaceChar.toString())
         }
         pinyinArray = s.replace("ü", "v").split(PINYIN_SEPARATOR)
@@ -104,7 +104,7 @@ public class PinyinHelper {
             if(format.getName() == "FIRST_LETTER") {
                 pinyinArray = formatPinyin(v, format)
                 for(i in 0..pinyinArray.size) {
-                   pinyinArray[i] = pinyinArray[i].charAt(0).toString()
+                   pinyinArray[i] = pinyinArray[i].get(0).getOrThrow().toString()
                 }
             } else {
                 pinyinArray = formatPinyin(v, format)
@@ -116,7 +116,6 @@ public class PinyinHelper {
     static func convertToPinyinArrays(c: Char, format: PinyinFormat): Array<String> {  
         var pinyinArray: Array<String> = Array<String>()
         if(let Some(v) = PINYIN_TABLE.get(c.toString())) {
-            var arr: Array<String> = Array<String>()
             pinyinArray = formatPinyin(v, format)
         }
         return pinyinArray
@@ -156,12 +155,12 @@ public class PinyinHelper {
             var subStr: String = string.substring(i)
             var commonPrefixList: Array<String> = getWords(subStr) 
             if(commonPrefixList.size == 0) {
-                var c: Char = string.charAt(i)
+                var c: Char = string.get(i).getOrThrow()
                 if(ChineseHelper.isChinese(c) || c == CHINESE_LING) {
                     var pinyinArray: Array<String> = convertToPinyinArrays(c, format)
                     if(pinyinArray.size > 0) {
                         if(format.getName() == "FIRST_LETTER"){
-                            resultPinyinStrBuf.append(pinyinArray[0].charAt(0).toString().concat(separator))
+                            resultPinyinStrBuf.append(pinyinArray[0].get(0).getOrThrow().toString().concat(separator))
                             pos++
                         }else{
                             resultPinyinStrBuf.append(pinyinArray[0].concat(separator))
@@ -171,7 +170,7 @@ public class PinyinHelper {
                         resultPinyinStrBuf.append(c.toString())
                     }
                 } else {
-                    if(separator.size != 0 && ((i + 1) < strLen) && ChineseHelper.isChinese(string.charAt(i + 1))) {
+                    if(separator.size != 0 && ((i + 1) < strLen) && ChineseHelper.isChinese(string.get(i + 1).getOrThrow())) {
                         resultPinyinStrBuf.append(c.toString().concat(separator))
                     } else {
                         resultPinyinStrBuf.append(c.toString())
@@ -183,7 +182,7 @@ public class PinyinHelper {
                 var pinyinArray: Array<String> = formatPinyin(MUTIL_PINYIN_TABLE[words], format)
                 for(j in 0..pinyinArray.size) {
                     if(format.getName() == "FIRST_LETTER"){
-                        resultPinyinStrBuf.append(pinyinArray[j].charAt(0).toString().concat(separator))
+                        resultPinyinStrBuf.append(pinyinArray[j].get(0).getOrThrow().toString().concat(separator))
                         pos++
                     }else{
                         resultPinyinStrBuf.append(pinyinArray[j].concat(separator))
@@ -194,7 +193,7 @@ public class PinyinHelper {
             }
         }
         var res: String = resultPinyinStrBuf.toString()
-        if(separator.size != 0 && (res.charAt(res.size - 1).toString() == separator)) {
+        if(separator.size != 0 && (res.get(res.size - 1).getOrThrow().toString() == separator)) {
             let lastIndex: Int64 = res.lastIndexOf(separator).getOrThrow()
             res = res.substring(0, lastIndex)
         }
