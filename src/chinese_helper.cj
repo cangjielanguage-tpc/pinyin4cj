@@ -38,7 +38,7 @@ public class ChineseHelper {
      * @return Char - traditional Chinese
      */
     static func convertCharToTraditionalChinese(c: Char): Char {
-        for((key, v) in CHINESE_MAP) {
+        for((key, _) in CHINESE_MAP) {
             if(CHINESE_MAP[key] == c) {
                 return key
             }
@@ -101,11 +101,11 @@ public class ChineseHelper {
      */
     public static func isChinese(c: Char): Bool {
         var flagC: Bool = match (CHINESE_REGEX.matches(c.toString())) {
-            case Some(r) => true
+            case Some(_) => true
             case None => false
         }
         var flagS: Bool = match (CHINESE_SYMBOL.matches(c.toString())) {
-            case Some(r) => true
+            case Some(_) => true
             case None => false
         }
         return '〇' == c || (flagC && flagS)

@@ -12,3 +12,6 @@
 /test2
 *.bc
 temp_ci_lib/
+log/
+report/
+tmp/
