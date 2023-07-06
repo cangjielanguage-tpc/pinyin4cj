@@ -131,7 +131,7 @@ public class PinyinHelper {
         for(i in 1..math.min(str.size + 1, 6)) {
             match(MUTIL_PINYIN_TABLE.get(str.substring(0, i))) {
                 case None => continue
-                case Some(v) => return [str.substring(0, i)]
+                case Some(_) => return [str.substring(0, i)]
             }
         }
         return []
