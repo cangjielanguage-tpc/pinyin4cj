@@ -147,10 +147,8 @@ public class PinyinHelper {
      */
     public static func convertToPinyinString(str: String, separator: String, format: PinyinFormat): String {
         var resultPinyinStrBuf: StringBuilder = StringBuilder()
-        var pos: Int64 = 0
         let string: String = ChineseHelper.convertToSimplifiedChinese(str)
-        var i: Int64 = 0
-        var strLen: Int64 = string.size
+        var (pos, i, strLen): (Int64, Int64, Int64) = (0, 0, string.size)
         while(i < strLen) {
             var subStr: String = string.substring(i)
             var commonPrefixList: Array<String> = getWords(subStr) 
@@ -192,7 +190,12 @@ public class PinyinHelper {
                 i += words.size
             }
         }
-        var res: String = resultPinyinStrBuf.toString()
+        
+        return convertToPinyinStringResult(resultPinyinStrBuf, separator)
+    }
+
+    static func convertToPinyinStringResult(buf: StringBuilder, separator: String): String {
+        var res: String = buf.toString()
         if(separator.size != 0 && (res.get(res.size - 1).getOrThrow().toString() == separator)) {
             let lastIndex: Int64 = res.lastIndexOf(separator).getOrThrow()
             res = res.substring(0, lastIndex)
