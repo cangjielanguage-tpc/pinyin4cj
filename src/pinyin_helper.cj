@@ -147,13 +147,12 @@ public class PinyinHelper {
      */
     public static func convertToPinyinString(str: String, separator: String, format: PinyinFormat): String {
         var resultPinyinStrBuf: StringBuilder = StringBuilder()
-        let string: String = ChineseHelper.convertToSimplifiedChinese(str)
-        var (pos, i, strLen): (Int64, Int64, Int64) = (0, 0, string.size)
+        var (pos, i, strLen): (Int64, Int64, Int64) = (0, 0, str.size)
         while(i < strLen) {
-            var subStr: String = string.substring(i)
+            var subStr: String = str.substring(i)
             var commonPrefixList: Array<String> = getWords(subStr) 
             if(commonPrefixList.size == 0) {
-                var c: Char = string.get(i).getOrThrow()
+                var c: Char = str.get(i).getOrThrow()
                 if(ChineseHelper.isChinese(c) || c == CHINESE_LING) {
                     var pinyinArray: Array<String> = convertToPinyinArrays(c, format)
                     if(pinyinArray.size > 0) {
@@ -168,7 +167,7 @@ public class PinyinHelper {
                         resultPinyinStrBuf.append(c.toString())
                     }
                 } else {
-                    if(separator.size != 0 && ((i + 1) < strLen) && ChineseHelper.isChinese(string.get(i + 1).getOrThrow())) {
+                    if(separator.size != 0 && ((i + 1) < strLen) && ChineseHelper.isChinese(str.get(i + 1).getOrThrow())) {
                         resultPinyinStrBuf.append(c.toString().concat(separator))
                     } else {
                         resultPinyinStrBuf.append(c.toString())
@@ -192,6 +191,11 @@ public class PinyinHelper {
         }
         
         return convertToPinyinStringResult(resultPinyinStrBuf, separator)
+    }
+
+    public static func convertToPinyinStringTraditional(str: String, separator: String, format: PinyinFormat): String {
+        let string: String = ChineseHelper.convertToSimplifiedChinese(str)
+        return convertToPinyinString(string, separator, format)
     }
 
     static func convertToPinyinStringResult(buf: StringBuilder, separator: String): String {
@@ -257,4 +261,5 @@ public class PinyinHelper {
     public static func addMutilPinyinDictResource(dict: HashMap<String, String>): Unit {
         MUTIL_PINYIN_TABLE.putAll(dict)   
     }
+
 }
