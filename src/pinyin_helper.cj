@@ -11,8 +11,8 @@ let PINYIN_TABLE: HashMap<String, String> = PinyinResource.getPinyinResource()
 let MUTIL_PINYIN_TABLE: HashMap<String, String> = PinyinResource.getMutilPinyinResource()
 var PINYIN_SEPARATOR = "," 
 var CHINESE_LING: Char = '〇'
-var ALL_UNMARKED_VOWEL: String = "aeiouv"
-var ALL_MARKED_VOWEL: String = "āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ"
+let ALL_UNMARKED_VOWEL_ARRAY: Array<Char> = ['a', 'e', 'i', 'o', 'u', 'v']
+let ALL_MARKED_VOWEL_ARRAY: Array<Char> = ['ā', 'á', 'ǎ', 'à', 'ē', 'é', 'ě', 'è', 'ī', 'í', 'ǐ', 'ì', 'ō', 'ó', 'ǒ', 'ò', 'ū', 'ú', 'ǔ', 'ù', 'ǖ', 'ǘ', 'ǚ', 'ǜ']
 
 /**
  * Pinyin conversion
@@ -31,15 +31,16 @@ public class PinyinHelper {
         for(i in 0..pinyinArray.size) {
             var hasMarkedChar: Bool = false
             var originalPinyin: String = pinyinArray[i].replace("ü", "v")
-            
+
+            var originalCharArray: Array<Char> = originalPinyin.toCharArray()
             for(j in 0..originalPinyin.size) {
-                var originalChar: Char = originalPinyin.get(j).getOrThrow()
+                var originalChar: Char = originalCharArray[j]
                 if(UInt32(originalChar) < UInt32('a') || UInt32(originalChar) > UInt32('z')) {
-                    var indexInAllMarked: Int64 = ALL_MARKED_VOWEL.indexOf(originalChar).getOrThrow()
+                    var indexInAllMarked: Int64 = findArrayKeyByValue(originalChar)
                     var toneNumber: Int64 = indexInAllMarked % 4 + 1
-                    var replaceChar: Char = ALL_UNMARKED_VOWEL.get((indexInAllMarked - indexInAllMarked % 4) / 4).getOrThrow()
-                    
-                    pinyinArray[i] = originalPinyin.replace(originalChar, replaceChar).concat(toneNumber.toString()) 
+                    var replaceChar: Char = ALL_UNMARKED_VOWEL_ARRAY[(indexInAllMarked - indexInAllMarked % 4) / 4]
+                    originalCharArray[j] = replaceChar
+                    pinyinArray[i] = String(originalCharArray).concat(toneNumber.toString())
                     hasMarkedChar = true
                     break
                 }
@@ -61,9 +62,9 @@ public class PinyinHelper {
     static func convertWithoutTone(str: String): Array<String> {
         var s: String = str
         var pinyinArray: Array<String> = Array<String>()
-        for(i in 0..ALL_MARKED_VOWEL.size) {
-            var originalChar: Char = ALL_MARKED_VOWEL.get(i).getOrThrow()
-            var replaceChar: Char = ALL_UNMARKED_VOWEL.get((i - i % 4) / 4).getOrThrow()
+        for(i in 0..ALL_MARKED_VOWEL_ARRAY.size) {
+            var originalChar: Char = ALL_MARKED_VOWEL_ARRAY[i]
+            var replaceChar: Char = ALL_UNMARKED_VOWEL_ARRAY[(i - i % 4) / 4]
             s = s.replace(originalChar.toString(), replaceChar.toString())
         }
         pinyinArray = s.replace("ü", "v").split(PINYIN_SEPARATOR)
@@ -127,11 +128,12 @@ public class PinyinHelper {
      * @param str - Chinese characters
      * @return Array<String>
      */
-    static func getWords(str: String): Array<String> { 
-        for(i in 1..math.min(str.size + 1, 6)) {
-            match(MUTIL_PINYIN_TABLE.get(str.substring(0, i))) {
+    static func getWords(charArray: Array<Char>): Array<String> { 
+        for(i in 1..math.min(charArray.size + 1, 6)) {
+            let str = String(charArray.slice(0, i))
+            match(MUTIL_PINYIN_TABLE.get(str)) {
                 case None => continue
-                case Some(_) => return [str.substring(0, i)]
+                case Some(_) => return [str]
             }
         }
         return []
@@ -148,11 +150,12 @@ public class PinyinHelper {
     public static func convertToPinyinString(str: String, separator: String, format: PinyinFormat): String {
         var resultPinyinStrBuf: StringBuilder = StringBuilder()
         var (pos, i, strLen): (Int64, Int64, Int64) = (0, 0, str.size)
+        let charArray: Array<Char> = str.toCharArray()
         while(i < strLen) {
-            var subStr: String = str.substring(i)
-            var commonPrefixList: Array<String> = getWords(subStr) 
+            let sliCharArray = charArray.slice(i, strLen - i)
+            var commonPrefixList: Array<String> = getWords(sliCharArray) 
             if(commonPrefixList.size == 0) {
-                var c: Char = str.get(i).getOrThrow()
+                var c: Char = charArray[i]
                 if(ChineseHelper.isChinese(c) || c == CHINESE_LING) {
                     var pinyinArray: Array<String> = convertToPinyinArrays(c, format)
                     if(pinyinArray.size > 0) {
@@ -167,7 +170,7 @@ public class PinyinHelper {
                         resultPinyinStrBuf.append(c.toString())
                     }
                 } else {
-                    if(separator.size != 0 && ((i + 1) < strLen) && ChineseHelper.isChinese(str.get(i + 1).getOrThrow())) {
+                    if(separator.size != 0 && ((i + 1) < strLen) && ChineseHelper.isChinese(charArray[i + 1])) {
                         resultPinyinStrBuf.append(c.toString().concat(separator))
                     } else {
                         resultPinyinStrBuf.append(c.toString())
@@ -200,9 +203,10 @@ public class PinyinHelper {
 
     static func convertToPinyinStringResult(buf: StringBuilder, separator: String): String {
         var res: String = buf.toString()
-        if(separator.size != 0 && (res.get(res.size - 1).getOrThrow().toString() == separator)) {
+        let charArray: Array<Char> = res.toCharArray()
+        if(separator.size != 0 && (charArray[res.size - 1].toString() == separator)) {
             let lastIndex: Int64 = res.lastIndexOf(separator).getOrThrow()
-            res = res.substring(0, lastIndex)
+            res = String(charArray.slice(0, lastIndex))
         }
         return res
     }
@@ -260,6 +264,16 @@ public class PinyinHelper {
      */
     public static func addMutilPinyinDictResource(dict: HashMap<String, String>): Unit {
         MUTIL_PINYIN_TABLE.putAll(dict)   
+    }
+
+    static func findArrayKeyByValue(ch: Char): Int64 {
+        for(i in 0..ALL_MARKED_VOWEL_ARRAY.size) {
+            if (ALL_MARKED_VOWEL_ARRAY[i] == ch) {
+                return i
+            }
+        }
+        return -1
+        
     }
 
 }
