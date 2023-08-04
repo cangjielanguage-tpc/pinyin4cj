@@ -15,3 +15,5 @@ temp_ci_lib/
 log/
 report/
 tmp/
+.cjpm-history
+module-lock.json

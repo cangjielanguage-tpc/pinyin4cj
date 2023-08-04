@@ -388,6 +388,48 @@ main() {
 wo3 shi4 zhong1 guo2 gong4 chan3 zhu3 yi4 jie1 ban1 ren2 。
 ```
 
+
+### 1.7 支持常用简体/繁体中文字符转换成通用拼音
+
+获取单个汉字（简体和繁体）的数字音标的通用拼音
+
+#### 1.7.1 主要接口
+
+```cangjie
+public class PinyinHelper {
+
+    /**
+     * 获取单个汉字（简体和繁体）的数字音标的通用拼音
+     * 
+     * 参数 char - 字符
+     * 返回值 Array<String> 
+     *        - 是汉字返回通用拼音
+     *        - 不是汉字返回 []
+     */
+    public static func toTongyongPinyinStringArray(char: Char): Array<String>
+}
+```
+
+#### 1.7.2 示例
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var simplePinyin: String = PinyinHelper.toTongyongPinyinStringArray('傳')
+    var traditionalPinyin: String = PinyinHelper.toTongyongPinyinStringArray('传')
+    println(simplePinyin)
+    println(traditionalPinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+["chuan2", "jhuan4"]
+["chuan2", "jhuan4"]
+```
+
 ## 2 其他接口
 
 ### 2.1 ChineseHelper

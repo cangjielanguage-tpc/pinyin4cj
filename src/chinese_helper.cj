@@ -4,8 +4,6 @@
 
 package pinyin4cj
 
-from std import regex.*
-
 let CHINESE_REGEX: Regex = Regex("^[\u{4e00}-\u{9fa5}]+$")
 let CHINESE_SYMBOL: String =  "。“”、"
 let CHINESE_MAP: HashMap<Char, Char> = PinyinResource.getChineseResource()

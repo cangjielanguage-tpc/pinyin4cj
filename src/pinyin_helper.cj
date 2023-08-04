@@ -4,11 +4,9 @@
 
 package pinyin4cj
 
-from std import io.*
-from std import math.*
-
 let PINYIN_TABLE: HashMap<String, String> = PinyinResource.getPinyinResource()
 let MUTIL_PINYIN_TABLE: HashMap<String, String> = PinyinResource.getMutilPinyinResource()
+let TONGYONG_PINYIN_TABLE: HashMap<String, String> = PinyinResource.getTongyongPinyinResource()
 var PINYIN_SEPARATOR = "," 
 var CHINESE_LING: Char = '〇'
 let ALL_UNMARKED_VOWEL_ARRAY: Array<Char> = ['a', 'e', 'i', 'o', 'u', 'v']
@@ -276,4 +274,26 @@ public class PinyinHelper {
         
     }
 
+    /**
+     * Character to Universal Pinyin
+     *
+     * @param char - Simplified or Traditional Characters
+     * @return Array<String>
+     */
+    public static func toTongyongPinyinStringArray(char: Char): Array<String> {
+        let pinyinArray: Array<String> = convertToPinyinArray(char, PinyinFormat.WITH_TONE_NUMBER)
+        var res: Array<String> = Array<String>(pinyinArray.size, item: "")
+        for(i in 0..pinyinArray.size) {
+            var word: String = ""
+            let num: String = pinyinArray[i].slice(pinyinArray[i].size - 1, 1)
+            let pinyin: String = pinyinArray[i].slice(0, pinyinArray[i].size - 1)
+            match(TONGYONG_PINYIN_TABLE.get(pinyin)) {
+                case None => word = pinyinArray[i]
+                case Some(t) => word = t.concat(num)
+            }
+            res[i] = word
+        }
+        return res
+    }
+     
 }

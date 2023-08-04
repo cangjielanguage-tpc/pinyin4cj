@@ -4,8 +4,6 @@
 
 package pinyin4cj
 
-from std import fs.*
-
 /*
  * Pinyin source data
  */
@@ -52,6 +50,15 @@ class PinyinResource {
      */
     static func getChineseResource() {
         return chinese_dict
+    }
+
+    /*
+     * Obtain TonyongPinyin Source
+     *
+     * @return HashMap
+     */
+    static func getTongyongPinyinResource() {
+        return tongyong_pinyin_dict
     }
 
 }
