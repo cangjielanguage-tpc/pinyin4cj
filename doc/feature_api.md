@@ -347,6 +347,46 @@ main() {
 ["yán"]
 ```
 
+### 1.8 支持 Unicode 格式的字符ü、支持声调符号、支持拼音首字母的输出格式（主要提高繁体字转换效率）
+
+可以将包含多音字或繁体字的词或句转成拼音，可以设置拼音输出格式 - 主要提高繁体字转换效率
+
+#### 1.8.1 主要接口
+
+```cangjie
+public class PinyinHelper {
+
+    /**
+     * 将包含多音字或繁体字的词或句转成拼音
+     * 若有些字拼音没有达到预期效果，用户可自定义拼音词典
+     * 
+     * 参数 str - 要转换的字符串
+     * 参数 separator - 分隔符
+     * 参数 format - 输出拼音格式
+     * 返回值 String - 返回转换后的拼音字符串
+     */
+    public static func convertToPinyinString(str: String, 
+                                            separator: String, 
+                                            format: PinyinFormat): String
+}
+```
+
+#### 1.8.2 示例
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var pinyin: String = PinyinHelper.convertToPinyinStringTraditional("我是中國共產主義接班人。", " ", PinyinFormat.WITH_TONE_NUMBER)
+    println(pinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+wo3 shi4 zhong1 guo2 gong4 chan3 zhu3 yi4 jie1 ban1 ren2 。
+```
 
 ## 2 其他接口
 

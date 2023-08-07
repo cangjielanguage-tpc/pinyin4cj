@@ -7,7 +7,7 @@ package pinyin4cj
 from std import regex.*
 
 let CHINESE_REGEX: Regex = Regex("^[\u{4e00}-\u{9fa5}]+$")
-let CHINESE_SYMBOL: Regex = Regex("[^\u{3002}\u{201c}\u{201d}\u{3001}]+$")
+let CHINESE_SYMBOL: String =  "。“”、"
 let CHINESE_MAP: HashMap<Char, Char> = PinyinResource.getChineseResource()
 
 /**
@@ -102,15 +102,14 @@ public class ChineseHelper {
      *                false: Not Chinese Characters  
      */
     public static func isChinese(c: Char): Bool {
+        if (CHINESE_SYMBOL.contains(c)) {
+            return false
+        }
         var flagC: Bool = match (CHINESE_REGEX.matches(c.toString())) {
             case Some(_) => true
             case None => false
         }
-        var flagS: Bool = match (CHINESE_SYMBOL.matches(c.toString())) {
-            case Some(_) => true
-            case None => false
-        }
-        return '〇' == c || (flagC && flagS)
+        return  '〇' == c || flagC
     }
 
     /**
