@@ -31,6 +31,8 @@ Pinyin4j 是一个支持将汉字转换成拼音的三方库，输出的拼音�
 
 - 🚀 支持添加自定义字典
 
+- 🛠️ 支持常用简体/繁体中文字符转换成通用拼音
+
 ## 软件架构
 
 ![design](./doc/assets/pinyin4cj.png)
@@ -48,6 +50,7 @@ Pinyin4j 是一个支持将汉字转换成拼音的三方库，输出的拼音�
 │   ├── pinyin_format.cj
 │   ├── pinyin_helper.cj
 │   ├── pinyin_resource.cj
+│   ├── tongyong_pinyin_dict.cj
 └── test
 │   ├── HLT
 │   ├── LLT
@@ -56,6 +59,8 @@ Pinyin4j 是一个支持将汉字转换成拼音的三方库，输出的拼音�
 ├── gitee_gate.cfg
 ├── LICENSE.txt
 ├── module.json
+├── pinyin4cj_build.bat
+├── pinyin4cj_build.sh
 ├── README.md
 ├── README.OpenSource
 ```
@@ -266,6 +271,28 @@ main() {
 
 ```
 ["yán"]
+```
+
+#### 繁简体转通用拼音
+
+示例代码如下：
+
+```cangjie
+from pinyin4cj import pinyin4cj.*
+
+main() {
+    var simplePinyin: String = PinyinHelper.toTongyongPinyinStringArray('傳')
+    var traditionalPinyin: String = PinyinHelper.toTongyongPinyinStringArray('传')
+    println(simplePinyin)
+    println(traditionalPinyin)
+    return 0
+}
+```
+执行结果如下：
+
+```
+["chuan2", "jhuan4"]
+["chuan2", "jhuan4"]
 ```
 
 ## 开源协议
