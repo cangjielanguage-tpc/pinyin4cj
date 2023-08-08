@@ -5,9 +5,6 @@
 
 package pinyin4cj
 
-from std import os.*
-from std import os.posix.*
-
 @When[os == "linux"]
 func getFilePath(): Path {
     match(getEnv("LD_LIBRARY_PATH")) {

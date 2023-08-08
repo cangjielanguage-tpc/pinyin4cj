@@ -4,8 +4,6 @@
 
 package pinyin4cj
 
-from std import collection.*
-
 /**
  * Chinese dictionary
  */
