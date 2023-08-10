@@ -4,8 +4,6 @@
 
 package pinyin4cj
 
-let CHINESE_REGEX: Regex = Regex("^[\u{4e00}-\u{9fa5}]+$")
-let CHINESE_SYMBOL: String =  "。“”、"
 let CHINESE_MAP: HashMap<Char, Char> = PinyinResource.getChineseResource()
 
 /**
@@ -100,14 +98,12 @@ public class ChineseHelper {
      *                false: Not Chinese Characters  
      */
     public static func isChinese(c: Char): Bool {
-        if (CHINESE_SYMBOL.contains(c)) {
-            return false
+        var flagC: Bool = false
+        if (PINYIN_TABLE.contains(c.toString())) {
+            flagC = true
         }
-        var flagC: Bool = match (CHINESE_REGEX.matches(c.toString())) {
-            case Some(_) => true
-            case None => false
-        }
-        return  '〇' == c || flagC
+
+        return flagC
     }
 
     /**
