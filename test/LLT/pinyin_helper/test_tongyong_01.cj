@@ -45,6 +45,8 @@ public class TestPinyinHelper {
         @Assert([], PinyinHelper.toTongyongPinyinStringArray('，'))
         @Assert([], PinyinHelper.toTongyongPinyinStringArray('&'))
         @Assert([], PinyinHelper.toTongyongPinyinStringArray('~'))
+        @Assert(["nyue4"], PinyinHelper.toTongyongPinyinStringArray('虐'))
+        @Assert(["hao3", "hao4"], PinyinHelper.toTongyongPinyinStringArray('好'))
     }
 
 }

@@ -9,7 +9,7 @@ kǎo,qiǎo,yú
 七
 qī
 丄
-shàng,shang
+shàng
 丅
 xià
 丆
@@ -27,7 +27,7 @@ xià
 丌
 qí,jī
 不
-bù,bú,fǒu
+bù,fǒu
 与
 yǔ,yù,yú
 丏
@@ -79,7 +79,7 @@ yán
 並
 bìng
 丧
-sàng,sāng,sang
+sàng,sāng
 丨
 gǔn
 丩
@@ -89,7 +89,7 @@ gè,gě
 丫
 yā
 丬
-pán,qiáng
+pán
 中
 zhōng,zhòng
 丮
