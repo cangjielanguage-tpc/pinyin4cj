@@ -168,8 +168,14 @@ public class PinyinHelper {
                         resultPinyinStrBuf.append(c.toString())
                     }
                 } else {
-                    if(separator.size != 0 && ((i + 1) < strLen) && ChineseHelper.isChinese(charArray[i + 1])) {
-                        resultPinyinStrBuf.append(c.toString().concat(separator))
+                    let index: Int64 = i
+                    if(((index + 1) < strLen)) {
+                        let next: Bool = ChineseHelper.isChinese(charArray[(index + 1)])
+                        if(next) {
+                            resultPinyinStrBuf.append(c.toString().concat(separator))
+                        } else {
+                            resultPinyinStrBuf.append(c.toString())   
+                        }
                     } else {
                         resultPinyinStrBuf.append(c.toString())
                     } 
