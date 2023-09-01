@@ -77,17 +77,16 @@ public class PinyinHelper {
      * @return Array<String>
      */
     static func formatPinyin(str: String, format: PinyinFormat): Array<String>{
-
         if (format.getName() == "WITH_TONE_MARK") {
-			return str.split(PINYIN_SEPARATOR)
-		} else if (format.getName() == "WITH_TONE_NUMBER") {
-			return convertWithToneNumber(str)
-		} else if (format.getName() == "WITHOUT_TONE") {
-			return convertWithoutTone(str)
-		} else if (format.getName() == "FIRST_LETTER") {
+            return str.split(PINYIN_SEPARATOR)
+        } else if (format.getName() == "WITH_TONE_NUMBER") {
+            return convertWithToneNumber(str)
+        } else if (format.getName() == "WITHOUT_TONE") {
+            return convertWithoutTone(str)
+        } else if (format.getName() == "FIRST_LETTER") {
             return convertWithoutTone(str)
         }
-		return Array<String>()
+        return Array<String>()
     }
 
     /* 
@@ -99,7 +98,7 @@ public class PinyinHelper {
      */
     public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String> {  
         var pinyinArray: Array<String> = Array<String>()
-        if(let Some(v) = PINYIN_TABLE.get(c.toString())) {
+        if(let Some(v) <- PINYIN_TABLE.get(c.toString())) {
             if(format.getName() == "FIRST_LETTER") {
                 pinyinArray = formatPinyin(v, format)
                 for(i in 0..pinyinArray.size) {
@@ -114,7 +113,7 @@ public class PinyinHelper {
 
     static func convertToPinyinArrays(c: Char, format: PinyinFormat): Array<String> {  
         var pinyinArray: Array<String> = Array<String>()
-        if(let Some(v) = PINYIN_TABLE.get(c.toString())) {
+        if(let Some(v) <- PINYIN_TABLE.get(c.toString())) {
             pinyinArray = formatPinyin(v, format)
         }
         return pinyinArray
