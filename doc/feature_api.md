@@ -349,7 +349,7 @@ main() {
 public class PinyinHelper {
 
     /**
-     * 常用多音字的转换成拼音集合
+     * 常用简体或繁体转换成拼音集合
      * 
      * 参数 c - 字符
      * 参数 format - 输出格式
