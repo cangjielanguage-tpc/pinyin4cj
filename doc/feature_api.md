@@ -236,7 +236,7 @@ public class ChineseHelper {
     /**
      * 用户添加自定义中文字典
      * 
-     * 参数 dict - 添加拼中文字典
+     * 参数 dict - 添加中文字典
      * 返回值 Unit
      */
     public static func addChineseDictResource(dict: HashMap<String, String>): Unit
