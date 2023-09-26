@@ -1,5 +1,5 @@
 #!/bin/bash -l
 
 cjpm clean
-cjpm build --coverage
+cjpm build
 cp -r ./resource/pinyin.dict.txt ./build/pinyin4cj/
