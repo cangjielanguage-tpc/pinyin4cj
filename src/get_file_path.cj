@@ -7,35 +7,33 @@ package pinyin4cj
 
 @When[os == "linux"]
 func getFilePath(): Path {
-    match(getEnv("LD_LIBRARY_PATH")) {
+    let env: Option<String> = getEnv("LD_LIBRARY_PATH")
+    return matchBuild(env)
+}
+
+@When[os == "windows"]
+func getFilePath(): Path {
+    let env: Option<String> = getEnv("Path")
+    return matchBuild(env)
+   
+}
+
+func matchBuild(env: Option<String>): Path {
+    match(env) {
         case Some(str) =>
             if (str.isEmpty() && str.size < 0 && !str.contains(":")) {
                 throw NoneValueException("Path is empty")
             }
             let paths: Array<String> = str.split(":")
-            for (path in paths where path.contains("pinyin4cj")) {
-                return Path(path)
+            for (i in 0..paths.size) {
+                if(paths[i].contains("bin")) {
+                    let j: Int64 = i + 1
+                    return Path(paths[j])
+                } else {
+                    return Path(paths[i])
+                }
             }
             throw NoneValueException("Unable to find the pinyin4cj directory")
         case None => throw NoneValueException("")
     }
 }
-
-@When[os == "windows"]
-func getFilePath(): Path {
-    match(getEnv("Path")) {
-        case Some(str) =>
-            if (str.isEmpty() && str.size < 0 && !str.contains(";")) {
-                throw NoneValueException("Path is empty")
-            }
-            println(str)
-            let paths: Array<String> = str.split(";")
-            println(paths)
-            for (path in paths where path.contains("pinyin4cj")) {
-                return Path(path)
-            }
-            throw NoneValueException("Unable to find the pinyin4cj directory")
-        case None => throw NoneValueException("")
-    }
-}
-
