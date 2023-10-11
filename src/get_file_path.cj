@@ -31,7 +31,6 @@ func getFilePath(): Path {
                 throw NoneValueException("Path is empty")
             }
             let paths: Array<String> = str.split(";")
-            println(paths)
             for (path in paths where (path.contains("build\\pinyin4cj") || path.contains("build\\release\\pinyin4cj")) && path.endsWith("pinyin4cj") && Directory.exists(path)) {
                 return Path(path)
             }
