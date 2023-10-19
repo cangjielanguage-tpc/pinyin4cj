@@ -17,6 +17,9 @@ class PinyinResource {
     static func getPinyinResource(): HashMap<String, String> {
         var getFilePath: Path = getFilePath()
         let resourceName: String = getFilePath.join("pinyin.dict.txt").toString()
+        if(!File.exists(resourceName)) {
+            throw Pinyin4cjException("The pinyin.dict.txt file does not exist")
+        }
         let file = File(resourceName, Open(true, false)) 
         let map = HashMap<String, String>(22000)
         var bufferedReader: StringReader = StringReader(file)
@@ -25,7 +28,7 @@ class PinyinResource {
                 case None => break
                 case Some(key) => 
                     match (bufferedReader.readln()) {
-                        case None => throw Exception()
+                        case None => throw Pinyin4cjException("Invalid value")
                         case Some(value) => 
                             map.put(key,value)
                     }

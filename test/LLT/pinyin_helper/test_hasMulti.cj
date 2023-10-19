@@ -8,7 +8,7 @@ from std import unittest.testmacro.*
 main() {
     try {
         PinyinHelper.hasMultiPinyin('。')
-    }catch(e: Exception) {
+    }catch(e: Pinyin4cjException) {
         if(!e.toString().contains("Please enter a Chinese character")) {
             return -2
         }

@@ -21,7 +21,7 @@ public class ChineseHelper {
         var simplifiedChinese: Char = 'a'
         try {
             simplifiedChinese = CHINESE_MAP[c]
-        }catch(e: Exception) {
+        }catch(e: NoneValueException) {
             return c
         }
         return simplifiedChinese
@@ -84,7 +84,7 @@ public class ChineseHelper {
     public static func isTraditionalChinese(c: Char): Bool {
         try {
             CHINESE_MAP[c]
-        }catch(e: Exception) {
+        }catch(e: NoneValueException) {
             return false
         }
         return true
