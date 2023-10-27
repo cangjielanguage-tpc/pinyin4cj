@@ -11,14 +11,14 @@ func getFilePath(): Path {
     match(env) {
         case Some(str) =>
             if (str.isEmpty() && str.size < 0 && !str.contains(":")) {
-                throw NoneValueException("Path is empty")
+                throw Pinyin4cjException("The path is empty")
             }
             let paths: Array<String> = str.split(":")
             for (path in paths where (path.contains("build/pinyin4cj") || path.contains("build/release/pinyin4cj")) && path.endsWith("pinyin4cj") && Directory.exists(path)) {
                 return Path(path)
             }
-            throw NoneValueException("Unable to find the pinyin4cj directory")
-        case None => throw NoneValueException("")
+            throw Pinyin4cjException("Unable to find the pinyin4cj directory")
+        case None => throw Pinyin4cjException("Invalid path value")
     }
 }
 
@@ -28,13 +28,13 @@ func getFilePath(): Path {
     match(env) {
         case Some(str) =>
             if (str.isEmpty() && str.size < 0 && !str.contains(";")) {
-                throw NoneValueException("Path is empty")
+                throw Pinyin4cjException("The path is empty")
             }
             let paths: Array<String> = str.split(";")
             for (path in paths where (path.contains("build\\pinyin4cj") || path.contains("build\\release\\pinyin4cj")) && path.endsWith("pinyin4cj") && Directory.exists(path)) {
                 return Path(path)
             }
-            throw NoneValueException("Unable to find the pinyin4cj directory")
-        case None => throw NoneValueException("")
+            throw Pinyin4cjException("Unable to find the pinyin4cj directory")
+        case None => throw Pinyin4cjException("Invalid path value")
     } 
 }

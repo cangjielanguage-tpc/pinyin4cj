@@ -20,10 +20,17 @@ public class pinyin_getShortPinyin_001 {
         @Assert(pinyin,"awzg")    
     }
     @TestCase
-    public func pinyin_getShortPinyin_003():Unit{
-        var pinyin = PinyinHelper.getShortPinyin("")
-        println("pinyin = ${pinyin}")
-        @Assert(pinyin,"")    
+    public func pinyin_getShortPinyin_003():Unit{  
+        var flag: Bool = false
+        try {
+            PinyinHelper.getShortPinyin("")
+        }catch(e: Pinyin4cjException) {
+            if(!e.toString().contains("Please enter a word or sentence")) {
+                flag = false
+            }
+            flag = true
+        }
+        @Assert(flag,true) 
     }
     @TestCase
     public func pinyin_getShortPinyin_004():Unit{

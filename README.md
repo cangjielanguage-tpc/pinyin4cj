@@ -180,6 +180,7 @@ wo3 shi4 zhong1 guo2 gong4 chan3 zhu3 yi4 jie1 ban1 ren2 。
 
 ```cangjie
 from pinyin4cj import pinyin4cj.*
+from std import collection.*
 
 main() {
     let map: HashMap<String, String> = HashMap<String, String>([("上", "shǎng")])
@@ -202,6 +203,7 @@ shǎng wǔ
 
 ```cangjie
 from pinyin4cj import pinyin4cj.*
+from std import collection.*
 
 main() {
     let map: HashMap<String, String> = HashMap<String, String>([("阿弥陀佛", "ā,mí,tuó,fó")])
@@ -223,6 +225,7 @@ main() {
 
 ```cangjie
 from pinyin4cj import pinyin4cj.*
+from std import collection.*
 
 main() {
     let map: HashMap<Char, Char> = HashMap<Char, Char>([('癥', '症')])

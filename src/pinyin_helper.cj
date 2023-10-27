@@ -145,6 +145,9 @@ public class PinyinHelper {
      * @return String
      */
     public static func convertToPinyinString(str: String, separator: String, format: PinyinFormat): String {
+        if(str.size == 0) {
+            throw Pinyin4cjException("Please enter a word or sentence")
+        }
         var resultPinyinStrBuf: StringBuilder = StringBuilder()
         var (pos, i, strLen): (Int64, Int64, Int64) = (0, 0, str.size)
         let charArray: Array<Char> = str.toCharArray()
@@ -243,7 +246,7 @@ public class PinyinHelper {
      */
     public static func hasMultiPinyin(c: Char): Bool {
         if(!ChineseHelper.isChinese(c)) {
-            throw Exception("Please enter a Chinese character")
+            throw Pinyin4cjException("Please enter a Chinese character")
         } 
         var pinyin: String = PINYIN_TABLE[c.toString()]
         return pinyin.split(',').size > 1

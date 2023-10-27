@@ -38,21 +38,23 @@ Pinyin4cj 是一个支持将汉字转换成拼音的三方库，输出的拼音�
 public class ChineseHelper {
 
     /**
-     * 将包含繁体的字符串转换成简体字符串
+     * 将包含繁体的字符串转换成简体字符串,非汉字原样返回
      * 若有些繁体字转换不成预期的简体字，用户可自定义中文词典
      * 
      * 参数 str - 要转换的字符串
      * 返回值 String - 返回转换后的简体字符串
+     *                若 str 为简体字符串，返回结果为它本身
      *                若 str 为空字符串，返回结果为空字符串
      */
     public static func convertToSimplifiedChinese(str: String): String 
 
     /**
-     * 将包含简体的字符串转换成繁体字符串
+     * 将包含简体的字符串转换成繁体字符串,非汉字原样返回
      * 若有些简体字转换不成预期的繁体字，用户可自定义中文词典
      *
      * 参数 str - 要转换的字符串
      * 返回值 String - 返回转换后的繁体字符串
+     *                若 str 为繁体字符串，返回结果为它本身
      *                若 str 为空字符串，返回结果为空字符串
      */
     public static func convertToTraditionalChinese(str: String): String   
@@ -105,12 +107,13 @@ main() {
 public class PinyinHelper {
 
     /**
-     * 将包含多音字或繁体字的词或句转成拼音
+     * 将包含多音字或繁体字的词或句转成拼音，按分隔符隔开，非汉字原样返回
      * 若有些字拼音没有达到预期效果，用户可自定义拼音词典
      * 
      * 参数 str - 要转换的字符串
      * 参数 separator - 分隔符
      * 返回值 String - 返回转换后的拼音字符串
+     *   - 若 str 为空字符串，抛出异常 Pinyin4cjException - Please enter a word or sentence           
      */
     public static func convertToPinyinString(str: String, separator: String): String
 }
@@ -143,25 +146,27 @@ wǒ shì zhōng guó gòng chǎn zhǔ yì jiē bān rén 。
 public class PinyinHelper {
 
     /**
-     * 将包含多音字或简体字的词或句转成拼音
+     * 将包含多音字或简体字的词或句转成指定拼音格式的拼音，按分隔符隔开，非汉字原样返回
      * 若有些字拼音没有达到预期效果，用户可自定义拼音词典
      * 
      * 参数 str - 要转换的字符串
      * 参数 separator - 分隔符
      * 参数 format - 输出拼音格式
      * 返回值 String - 返回转换后的拼音字符串
+     *   - 若 str 为空字符串，抛出异常 Pinyin4cjException - Please enter a word or sentence  
      */
     public static func convertToPinyinString(str: String, 
                                             separator: String, 
                                             format: PinyinFormat): String
     /**
-     * 将包含多音字或繁体字的词或句转成拼音
+     * 将包含多音字或繁体字的词或句转成指定拼音格式的拼音，按分隔符隔开，非汉字原样返回
      * 若有些字拼音没有达到预期效果，用户可自定义拼音词典
      * 
      * 参数 str - 要转换的字符串
      * 参数 separator - 分隔符
      * 参数 format - 输出拼音格式
      * 返回值 String - 返回转换后的拼音字符串
+     *   - 若 str 为空字符串，抛出异常 Pinyin4cjException - Please enter a word or sentence  
      */
     public static func convertToPinyinStringTraditional(str: String, 
                                                         separator: String, 
@@ -250,6 +255,7 @@ public class ChineseHelper {
 
 ```cangjie
 from pinyin4cj import pinyin4cj.*
+from std import collection.*
 
 main() {
     let map: HashMap<String, String> = HashMap<String, String>([("上", "shǎng")])
@@ -268,6 +274,7 @@ shǎng wǔ
 
 ```cangjie
 from pinyin4cj import pinyin4cj.*
+from std import collection.*
 
 main() {
     let map: HashMap<String, String> = HashMap<String, String>([("阿弥陀佛", "ā,mí,tuó,fó")])
@@ -286,6 +293,7 @@ main() {
 
 ```cangjie
 from pinyin4cj import pinyin4cj.*
+from std import collection.*
 
 main() {
     let map: HashMap<Char, Char> = HashMap<Char, Char>([('癥', '症')])
@@ -311,11 +319,12 @@ main() {
 public class PinyinHelper {
 
     /**
-     * 常用多音字的转换成拼音集合
+     * 常用多音字转换成拼音集合
      * 
      * 参数 c - 字符
      * 参数 format - 输出格式
-     * 返回值 Array<String>
+     * 返回值 Array<String> 
+     *   - 若 c 为非汉字字符，返回 []
      */
     public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String>
 }
@@ -354,6 +363,7 @@ public class PinyinHelper {
      * 参数 c - 字符
      * 参数 format - 输出格式
      * 返回值 Array<String>
+     *   - 若 c 为非汉字字符，返回 []
      */
     public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String>
 }
@@ -493,6 +503,7 @@ public class PinyinHelper {
      *
      * 参数 str - 字符串
      * 返回值 String
+     *   - 若 str 为空字符串，抛出异常 Pinyin4cjException - Please enter a word or sentence  
      */
     public static func getShortPinyin(str: String): String
 
@@ -507,3 +518,37 @@ public class PinyinHelper {
 }
 ```
 
+
+### 2.4 Pinyin4cjException
+
+pinyin4cj 异常类
+
+```
+public class Pinyin4cjException <: Exception {
+    /**
+     * 异常初始化
+     */
+    public init()
+
+    /**
+     * 异常初始化
+     *
+     * 参数 messages - 异常信息
+     */
+    public init(messages: String)
+
+    /**
+     * 获取异常信息
+     *
+     * 返回值 String - 异常信息
+     */
+    public func getMessage(): String
+
+    /**
+     * 异常信息转换为 String 类型
+     *
+     * 返回值 String
+     */
+    public override func toString(): String
+}
+```
