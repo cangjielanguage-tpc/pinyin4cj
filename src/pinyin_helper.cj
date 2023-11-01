@@ -30,7 +30,7 @@ public class PinyinHelper {
             var hasMarkedChar: Bool = false
             var originalPinyin: String = pinyinArray[i].replace("ü", "v")
 
-            var originalCharArray: Array<Char> = originalPinyin.toCharArray()
+            var originalCharArray: Array<Char> = originalPinyin.toRuneArray()
             for(j in 0..originalPinyin.size) {
                 var originalChar: Char = originalCharArray[j]
                 if(UInt32(originalChar) < UInt32('a') || UInt32(originalChar) > UInt32('z')) {
@@ -38,7 +38,7 @@ public class PinyinHelper {
                     var toneNumber: Int64 = indexInAllMarked % 4 + 1
                     var replaceChar: Char = ALL_UNMARKED_VOWEL_ARRAY[(indexInAllMarked - indexInAllMarked % 4) / 4]
                     originalCharArray[j] = replaceChar
-                    pinyinArray[i] = String(originalCharArray).concat(toneNumber.toString())
+                    pinyinArray[i] = String(originalCharArray) + (toneNumber.toString())
                     hasMarkedChar = true
                     break
                 }
@@ -102,7 +102,7 @@ public class PinyinHelper {
             if(format.getName() == "FIRST_LETTER") {
                 pinyinArray = formatPinyin(v, format)
                 for(i in 0..pinyinArray.size) {
-                   pinyinArray[i] = pinyinArray[i].get(0).getOrThrow().toString()
+                   pinyinArray[i] = (pinyinArray[i].toRuneArray())[0].toString()
                 }
             } else {
                 pinyinArray = formatPinyin(v, format)
@@ -145,12 +145,12 @@ public class PinyinHelper {
      * @return String
      */
     public static func convertToPinyinString(str: String, separator: String, format: PinyinFormat): String {
-        if(str.size == 0) {
+        let charArray: Array<Char> = str.toRuneArray()
+        if(charArray.size == 0) {
             throw Pinyin4cjException("Please enter a word or sentence")
         }
         var resultPinyinStrBuf: StringBuilder = StringBuilder()
-        var (pos, i, strLen): (Int64, Int64, Int64) = (0, 0, str.size)
-        let charArray: Array<Char> = str.toCharArray()
+        var (pos, i, strLen): (Int64, Int64, Int64) = (0, 0, charArray.size)
         while(i < strLen) {
             let sliCharArray = charArray.slice(i, strLen - i)
             var commonPrefixList: Array<String> = getWords(sliCharArray) 
@@ -160,10 +160,10 @@ public class PinyinHelper {
                     var pinyinArray: Array<String> = convertToPinyinArrays(c, format)
                     if(pinyinArray.size > 0) {
                         if(format.getName() == "FIRST_LETTER"){
-                            resultPinyinStrBuf.append(pinyinArray[0].get(0).getOrThrow().toString().concat(separator))
+                            resultPinyinStrBuf.append((pinyinArray[0].toRuneArray())[0].toString() + (separator))
                             pos++
                         }else{
-                            resultPinyinStrBuf.append(pinyinArray[0].concat(separator))
+                            resultPinyinStrBuf.append(pinyinArray[0] + (separator))
                             pos++
                         }
                     }else{
@@ -174,7 +174,7 @@ public class PinyinHelper {
                     if(((index + 1) < strLen)) {
                         let next: Bool = ChineseHelper.isChinese(charArray[(index + 1)])
                         if(next) {
-                            resultPinyinStrBuf.append(c.toString().concat(separator))
+                            resultPinyinStrBuf.append(c.toString() + (separator))
                         } else {
                             resultPinyinStrBuf.append(c.toString())   
                         }
@@ -188,14 +188,14 @@ public class PinyinHelper {
                 var pinyinArray: Array<String> = formatPinyin(MUTIL_PINYIN_TABLE[words], format)
                 for(j in 0..pinyinArray.size) {
                     if(format.getName() == "FIRST_LETTER"){
-                        resultPinyinStrBuf.append(pinyinArray[j].get(0).getOrThrow().toString().concat(separator))
+                        resultPinyinStrBuf.append((pinyinArray[j].toRuneArray())[0].toString() + (separator))
                         pos++
                     }else{
-                        resultPinyinStrBuf.append(pinyinArray[j].concat(separator))
+                        resultPinyinStrBuf.append(pinyinArray[j] + (separator))
                         pos++
                     }
                 }
-                i += words.size
+                i += words.toRuneArray().size
             }
         }
         
@@ -209,10 +209,10 @@ public class PinyinHelper {
 
     static func convertToPinyinStringResult(buf: StringBuilder, separator: String): String {
         var res: String = buf.toString()
-        let charArray: Array<Char> = res.toCharArray()
-        if(separator.size != 0 && (charArray[res.size - 1].toString() == separator)) {
-            let lastIndex: Int64 = res.lastIndexOf(separator).getOrThrow()
-            res = String(charArray.slice(0, lastIndex))
+        let charArray: Array<Char> = res.toRuneArray()
+        if(separator.toRuneArray().size != 0 && (charArray[res.toRuneArray().size - 1].toString() == separator)) {
+            let lastIndex: Int64 = res.lastIndexOf(separator.toArray()[0]).getOrThrow()
+            res = res[..lastIndex]
         }
         return res
     }
@@ -249,7 +249,7 @@ public class PinyinHelper {
             throw Pinyin4cjException("Please enter a Chinese character")
         } 
         var pinyin: String = PINYIN_TABLE[c.toString()]
-        return pinyin.split(',').size > 1
+        return pinyin.split(",").size > 1
     }
 
     /**
@@ -293,11 +293,11 @@ public class PinyinHelper {
         var res: Array<String> = Array<String>(pinyinArray.size, item: "")
         for(i in 0..pinyinArray.size) {
             var word: String = ""
-            let num: String = pinyinArray[i].slice(pinyinArray[i].size - 1, 1)
-            let pinyin: String = pinyinArray[i].slice(0, pinyinArray[i].size - 1)
+            let num: String = pinyinArray[i][(pinyinArray[i].toRuneArray().size - 1)..]
+            let pinyin: String = pinyinArray[i][..(pinyinArray[i].toRuneArray().size - 1)]
             match(TONGYONG_PINYIN_TABLE.get(pinyin)) {
                 case None => word = pinyinArray[i]
-                case Some(t) => word = t.concat(num)
+                case Some(t) => word = t + (num)
             }
             res[i] = word
         }
