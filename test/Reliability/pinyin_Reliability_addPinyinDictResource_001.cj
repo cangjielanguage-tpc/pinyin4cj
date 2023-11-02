@@ -1,0 +1,56 @@
+//3rd_party_lib:pinyin4cj/build/pinyin4cj
+
+from std import unittest.*
+from std import unittest.testmacro.*
+from pinyin4cj import pinyin4cj.*
+from std import collection.*
+from std import time.*
+from std import sync.*
+@Test
+public class pinyin_Reliability_addPinyinDictResource_001 {
+    @TestCase
+    public func pinyin_Reliability_addPinyinDictResource_001():Unit{
+        let threadCount = 200
+        let loopCount = 10000
+        let futures = ArrayList<Future<Int64>>()
+
+        var str = PinyinHelper.convertToPinyinString("答理", " ")
+        println("str = ${str}")
+        @Assert(str,"dá lǐ")   
+        
+
+        let successCount = AtomicInt64(0)
+        let s = DateTime.now()
+        for (_ in 0..threadCount) {
+            var thread = spawn {
+                var threadSuccessCount = loopCount
+                for (_ in 0..loopCount) {
+                    try {
+                        let map: HashMap<String, String> = HashMap<String, String>([("答", "dā")])
+                        PinyinHelper.addPinyinDictResource(map)
+                        var str = PinyinHelper.convertToPinyinString("答理", " ")
+                        @Assert(str,"dā lǐ")
+                    } catch (e: Exception) {
+                        threadSuccessCount--
+                        println("Exception!!!! ")
+                        break
+                    }
+                }
+                successCount.fetchAdd(threadSuccessCount)
+            }
+            futures.append(thread)
+        }
+        for (f in futures) {
+            f.get()
+        }
+        println("futures:${futures.size}")
+        println("s:${s}")
+        println("Duration.since(s):${Duration.since(s)}")
+        let e = Duration.since(s).toSeconds()
+        println("线程数:${threadCount}")
+        println("successCount:${successCount.load()}")
+        println("循环次数:${loopCount}")
+        println("耗时:${e} s")
+        println("吞吐量:${Float32(successCount.load())/Float32(e)} 次/s")
+    }
+}   
