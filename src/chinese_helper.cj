@@ -50,7 +50,7 @@ public class ChineseHelper {
      */
     public static func convertToSimplifiedChinese(str: String): String {
         var result: String = ""
-        let charArray: Array<Char> = str.toCharArray()
+        let charArray: Array<Char> = str.toRuneArray()
         for(i in 0..charArray.size) {
             var c: Char = charArray[i]
             result += convertCharToSimplifiedChinese(c).toString()
@@ -66,7 +66,7 @@ public class ChineseHelper {
      */
     public static func convertToTraditionalChinese(str: String): String {
         var result: String = ""
-        let charArray: Array<Char> = str.toCharArray()
+        let charArray: Array<Char> = str.toRuneArray()
         for(i in 0..charArray.size) {
             var c: Char = charArray[i]
             result += convertCharToTraditionalChinese(c).toString()
@@ -114,7 +114,7 @@ public class ChineseHelper {
      *                false: Does not contain Chinese characters  
      */
     public static func containsChinese(str: String): Bool {
-        let charArray: Array<Char> = str.toCharArray()
+        let charArray: Array<Char> = str.toRuneArray()
         for(i in 0..charArray.size) {
             if(isChinese(charArray[i])){
                 return true
