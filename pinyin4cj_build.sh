@@ -2,4 +2,4 @@
 
 cjpm clean
 cjpm build
-cp -r ./resource/pinyin.dict.txt ./build/release/pinyin4cj/
+cp -r ./resource/pinyin.dict.txt ./target/release/pinyin4cj/

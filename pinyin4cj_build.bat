@@ -1,4 +1,4 @@
-cjpm clean
+cjpm cleantarget
 cjpm build
-Xcopy /E/H/C/I .\resource\pinyin.dict.txt .\build\release\pinyin4cj\
+Xcopy /E/H/C/I .\resource\pinyin.dict.txt .\target\release\pinyin4cj\
 

@@ -2,7 +2,7 @@
 /.git
 /.idea
 /module-resolve.json
-/build
+/target
 /bin
 /ci_test/
 /ci_lib/
@@ -17,6 +17,9 @@ report/
 tmp/
 .cjpm-history
 module-lock.json
+cjpm.*
+target/
+test_temp/
 .cached
 test/Reliability
 *.macrocall
