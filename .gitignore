@@ -17,7 +17,7 @@ report/
 tmp/
 .cjpm-history
 module-lock.json
-cjpm.*
+cjpm.lock
 target/
 test_temp/
 .cached
