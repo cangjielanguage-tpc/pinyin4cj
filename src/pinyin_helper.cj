@@ -167,7 +167,8 @@ public class PinyinHelper {
                             pos++
                         }
                     }else{
-                        resultPinyinStrBuf.append(c.toString())
+                        resultPinyinStrBuf.append(c)
+
                     }
                 } else {
                     let index: Int64 = i
@@ -176,10 +177,10 @@ public class PinyinHelper {
                         if(next) {
                             resultPinyinStrBuf.append(c.toString() + (separator))
                         } else {
-                            resultPinyinStrBuf.append(c.toString())   
+                            resultPinyinStrBuf.append(c)   
                         }
                     } else {
-                        resultPinyinStrBuf.append(c.toString())
+                        resultPinyinStrBuf.append(c)
                     } 
                 }
                 i++
