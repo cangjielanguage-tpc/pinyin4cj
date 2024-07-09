@@ -250,7 +250,7 @@ main() {
 from pinyin4cj import pinyin4cj.*
 
 main() {
-    var pinyin: String = PinyinHelper.convertToPinyinArray('长', PinyinFormat.WITH_TONE_MARK)
+    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray('长', PinyinFormat.WITH_TONE_MARK)
     println(pinyin)
     return 0
 }
@@ -269,7 +269,7 @@ main() {
 from pinyin4cj import pinyin4cj.*
 
 main() {
-    var pinyin: String = PinyinHelper.convertToPinyinArray('嚴', PinyinFormat.WITH_TONE_MARK)
+    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray('嚴', PinyinFormat.WITH_TONE_MARK)
     println(pinyin)
     return 0
 }
@@ -288,8 +288,8 @@ main() {
 from pinyin4cj import pinyin4cj.*
 
 main() {
-    var simplePinyin: String = PinyinHelper.toTongyongPinyinStringArray('傳')
-    var traditionalPinyin: String = PinyinHelper.toTongyongPinyinStringArray('传')
+    var simplePinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray('傳')
+    var traditionalPinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray('传')
     println(simplePinyin)
     println(traditionalPinyin)
     return 0
