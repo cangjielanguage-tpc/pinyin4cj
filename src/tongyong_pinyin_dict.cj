@@ -1,3 +1,7 @@
+/*
+ * @Copyright (c) Huawei Technologies Co., Ltd. 2023-2023. All rights reserved.
+ */
+
 package pinyin4cj
 
 let tongyong_pinyin_dict: HashMap<String, String> = HashMap<String, String>([
