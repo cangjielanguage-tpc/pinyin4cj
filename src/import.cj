@@ -1,4 +1,6 @@
-
+/*
+ * @Copyright (c) Huawei Technologies Co., Ltd. 2023-2023. All rights reserved.
+ */
 package pinyin4cj
 
 from std import regex.*
