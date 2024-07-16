@@ -1,8 +1,12 @@
 /*
- * @Copyright (c) Huawei Technologies Co., Ltd. 2023-2023. All rights reserved.
+ * @Copyright (c) Huawei Technologies Co., Ltd. 2023-2024. All rights reserved.
  */
 
 package pinyin4cj
+
+import std.collection.HashMap
+import std.fs.{Path, File, OpenOption}
+import std.io.StringReader
 
 /*
  * Pinyin source data

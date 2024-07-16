@@ -1,10 +1,11 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
-from std import unittest.*
-from std import unittest.testmacro.*
+import pinyin4cj.*
+import std.collection.*
+import std.unittest.*
+import std.unittest.testmacro.*
+
 
 main() {    
     let TestHanYufanti = TestHanYufanti()
@@ -22,7 +23,7 @@ main() {
 public class TestHanYufanti {
     @TestCase
     public func test1(): Unit {
-        var arr: Array<Char> = ['棲', '薺', '啟', '豈', '棄', '訖', '韆', '籤', '僉', '纖', '蹌', '竅', '竊', '瓊', '覷', '麯', '闋', '闕']
+        var arr: Array<Rune> = [r'棲', r'薺', r'啟', r'豈', r'棄', r'訖', r'韆', r'籤', r'僉', r'纖', r'蹌', r'竅', r'竊', r'瓊', r'覷', r'麯', r'闋', r'闕']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -33,7 +34,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test2(): Unit {
-        var arr: Array<Char> = ['盤', '蹣', '龐', '紕', '闢', '駢', '嬪', '蘋', '憑', '潑', '僕']
+        var arr: Array<Rune> = [r'盤', r'蹣', r'龐', r'紕', r'闢', r'駢', r'嬪', r'蘋', r'憑', r'潑', r'僕']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -44,7 +45,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test3(): Unit {
-        var arr: Array<Char> = ['難', '撓', '腦', '餒', '輦', '嫋', '聶', '齧', '擰', '農', '駑', '漚', '慪']
+        var arr: Array<Rune> = [r'難', r'撓', r'腦', r'餒', r'輦', r'嫋', r'聶', r'齧', r'擰', r'農', r'駑', r'漚', r'慪']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -55,7 +56,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test4(): Unit {
-        var arr: Array<Char> = ['邁', '麥', '賣', '黴', '懣', '黽', '獼', '麵', '滅', '衊', '畝', '驀']
+        var arr: Array<Rune> = [r'邁', r'麥', r'賣', r'黴', r'懣', r'黽', r'獼', r'麵', r'滅', r'衊', r'畝', r'驀']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -66,7 +67,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test5(): Unit {
-        var arr: Array<Char> = ['臘', '蠟', '攔', '覽', '欖', '纍', '淚', '籬', '曆', '褳', '斂', '練', '殮', '臨', '廬', '掄', '圇']
+        var arr: Array<Rune> = [r'臘', r'蠟', r'攔', r'覽', r'欖', r'纍', r'淚', r'籬', r'曆', r'褳', r'斂', r'練', r'殮', r'臨', r'廬', r'掄', r'圇']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -77,7 +78,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test6(): Unit {
-        var arr: Array<Char> = ['墾', '懇', '摳', '噲', '寬', '壙', '曠', '礦', '虧', '巋', '擴']
+        var arr: Array<Rune> = [r'墾', r'懇', r'摳', r'噲', r'寬', r'壙', r'曠', r'礦', r'虧', r'巋', r'擴']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -88,7 +89,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test7(): Unit {
-        var arr: Array<Char> = ['擊', '霽', '傢', '儉', '瞼', '餞', '癤', '傑', '儘', '驚', '剄', '鬮', '舊', '懼', '钁']
+        var arr: Array<Rune> = [r'擊', r'霽', r'傢', r'儉', r'瞼', r'餞', r'癤', r'傑', r'儘', r'驚', r'剄', r'鬮', r'舊', r'懼', r'钁']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))

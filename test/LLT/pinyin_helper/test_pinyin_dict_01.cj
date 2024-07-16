@@ -1,10 +1,11 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
-from std import unittest.*
-from std import unittest.testmacro.*
+import pinyin4cj.*
+import std.collection.*
+import std.unittest.*
+import std.unittest.testmacro.*
+
 
 main() {
     let testPinyinHelper = TestPinyinHelper()
@@ -17,14 +18,14 @@ main() {
 public class TestPinyinHelper {
     @TestCase
     public func test1(): Unit {
-        @Assert(false, PinyinHelper.hasMultiPinyin('时'))
+        @Assert(false, PinyinHelper.hasMultiPinyin(r'时'))
     }
 
     @TestCase
     public func test2(): Unit {
         let map: HashMap<String, String> = HashMap<String, String>([("时","shí,shǐ,shì")])
         PinyinHelper.addPinyinDictResource(map)
-        @Assert(true, PinyinHelper.hasMultiPinyin('时'))
+        @Assert(true, PinyinHelper.hasMultiPinyin(r'时'))
     }
 
 }

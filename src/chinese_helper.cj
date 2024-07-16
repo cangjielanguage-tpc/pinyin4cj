@@ -1,10 +1,12 @@
 /*
- * @Copyright (c) Huawei Technologies Co., Ltd. 2023-2023. All rights reserved.
+ * @Copyright (c) Huawei Technologies Co., Ltd. 2023-2024. All rights reserved.
  */
 
 package pinyin4cj
 
-let CHINESE_MAP: HashMap<Char, Char> = PinyinResource.getChineseResource()
+import std.collection.HashMap
+
+let CHINESE_MAP: HashMap<Rune, Rune> = PinyinResource.getChineseResource()
 
 /**
  * Conversion of Simplified and Traditional Chinese Characters
@@ -15,10 +17,10 @@ public class ChineseHelper {
      * Convert a single Traditional Chinese character to Simplified Chinese
      *
      * @param c - Single Traditional Chinese Character
-     * @return Char - Simplified Chinese
+     * @return Rune - Simplified Chinese
      */
-    static func convertCharToSimplifiedChinese(c: Char): Char {
-        var simplifiedChinese: Char = 'a'
+    static func convertCharToSimplifiedChinese(c: Rune): Rune {
+        var simplifiedChinese: Rune = r'a'
         try {
             simplifiedChinese = CHINESE_MAP[c]
         } catch (e: NoneValueException) {
@@ -31,9 +33,9 @@ public class ChineseHelper {
      * Convert individual simplified characters to traditional characters
      *
      * @param c - Single simplified Chinese Character
-     * @return Char - traditional Chinese
+     * @return Rune - traditional Chinese
      */
-    static func convertCharToTraditionalChinese(c: Char): Char {
+    static func convertCharToTraditionalChinese(c: Rune): Rune {
         for ((key, _) in CHINESE_MAP) {
             if (CHINESE_MAP[key] == c) {
                 return key
@@ -50,9 +52,9 @@ public class ChineseHelper {
      */
     public static func convertToSimplifiedChinese(str: String): String {
         var result: String = ""
-        let charArray: Array<Char> = str.toRuneArray()
+        let charArray: Array<Rune> = str.toRuneArray()
         for (i in 0..charArray.size) {
-            var c: Char = charArray[i]
+            var c: Rune = charArray[i]
             result += convertCharToSimplifiedChinese(c).toString()
         }
         return result
@@ -69,7 +71,7 @@ public class ChineseHelper {
         let sb = StringBuilder()
         var i: Int64 = 0
         while (i < str.size) {
-            var (r, utf8Size) = Char.fromUtf8(data, i)
+            var (r, utf8Size) = Rune.fromUtf8(data, i)
             i += utf8Size
             sb.append(convertCharToTraditionalChinese(r))
         }
@@ -84,7 +86,7 @@ public class ChineseHelper {
      * @return Bool - true: It's a traditional Chinese character
      *                false: Not Traditional Chinese Characters
      */
-    public static func isTraditionalChinese(c: Char): Bool {
+    public static func isTraditionalChinese(c: Rune): Bool {
         try {
             CHINESE_MAP[c]
         } catch (e: NoneValueException) {
@@ -100,7 +102,7 @@ public class ChineseHelper {
      * @return Bool - true: It's a Chinese character
      *                false: Not Chinese Characters
      */
-    public static func isChinese(c: Char): Bool {
+    public static func isChinese(c: Rune): Bool {
         var flagC: Bool = false
         if (PINYIN_TABLE.contains(c.toString())) {
             flagC = true
@@ -117,7 +119,7 @@ public class ChineseHelper {
      *                false: Does not contain Chinese characters
      */
     public static func containsChinese(str: String): Bool {
-        let charArray: Array<Char> = str.toRuneArray()
+        let charArray: Array<Rune> = str.toRuneArray()
         for (i in 0..charArray.size) {
             if (isChinese(charArray[i])) {
                 return true
@@ -132,7 +134,7 @@ public class ChineseHelper {
      * @param dict - Chinese dictionary
      * @return Unit
      */
-    public static func addChineseDictResource(dict: HashMap<Char, Char>): Unit {
+    public static func addChineseDictResource(dict: HashMap<Rune, Rune>): Unit {
         CHINESE_MAP.putAll(dict)
     }
 }

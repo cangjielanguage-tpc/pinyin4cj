@@ -1,10 +1,11 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from pinyin4cj import pinyin4cj.*
-from std import time.*
-from std import unittest.*
-from std import collection.*
+import pinyin4cj.*
+import std.time.*
+import std.unittest.*
+import std.collection.*
+import std.unittest.testmacro.*
 
 main() {
     println("TCS: ahoCorasick4cj, time elapsed: 1 ns, RESULT:")

@@ -1,9 +1,10 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from pinyin4cj import pinyin4cj.*
-from std import unittest.*
-from std import unittest.testmacro.*
+import pinyin4cj.*
+import std.unittest.*
+import std.unittest.testmacro.*
+
 
 main() {
     let testChineseHelper = TestChineseHelper()
@@ -30,11 +31,11 @@ public class TestChineseHelper {
 
     @TestCase
     public func test3(): Unit {
-        @Assert(true, ChineseHelper.isChinese('台'))
-        @Assert(false, ChineseHelper.isChinese('3'))
-        @Assert(false, ChineseHelper.isChinese('J'))
-        @Assert(false, ChineseHelper.isChinese(','))
-        @Assert(false, ChineseHelper.isChinese('。'))
+        @Assert(true, ChineseHelper.isChinese(r'台'))
+        @Assert(false, ChineseHelper.isChinese(r'3'))
+        @Assert(false, ChineseHelper.isChinese(r'J'))
+        @Assert(false, ChineseHelper.isChinese(r','))
+        @Assert(false, ChineseHelper.isChinese(r'。'))
     }
 
     @TestCase
@@ -47,8 +48,8 @@ public class TestChineseHelper {
 
     @TestCase
     public func test5(): Unit {
-        @Assert(true, ChineseHelper.isTraditionalChinese('臺'))
-        @Assert(false, ChineseHelper.isTraditionalChinese('癥'))
-        @Assert(false, ChineseHelper.isTraditionalChinese('台'))
+        @Assert(true, ChineseHelper.isTraditionalChinese(r'臺'))
+        @Assert(false, ChineseHelper.isTraditionalChinese(r'癥'))
+        @Assert(false, ChineseHelper.isTraditionalChinese(r'台'))
     }
 }

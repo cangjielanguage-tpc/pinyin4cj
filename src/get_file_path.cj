@@ -1,11 +1,14 @@
 
 /*
- * @Copyright (c) Huawei Technologies Co., Ltd. 2023-2023. All rights reserved.
+ * @Copyright (c) Huawei Technologies Co., Ltd. 2023-2024. All rights reserved.
  */
 
 package pinyin4cj
 
-@When[os == "linux"]
+import std.os.*
+import std.fs.{Path, Directory}
+
+@When[os == "Linux"]
 func getFilePath(): Path {
     let env: Option<String> = getEnv("LD_LIBRARY_PATH")
     match(env) {
@@ -22,7 +25,7 @@ func getFilePath(): Path {
     }
 }
 
-@When[os == "windows"]
+@When[os == "Windows"]
 func getFilePath(): Path {
     let env: Option<String> = getEnv("Path")
     match(env) {

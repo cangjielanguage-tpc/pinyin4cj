@@ -1,10 +1,11 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
-from std import unittest.*
-from std import unittest.testmacro.*
+import pinyin4cj.*
+import std.collection.*
+import std.unittest.*
+import std.unittest.testmacro.*
+
 
 main() {    
     let TestHanYufanti = TestHanYufanti()
@@ -22,7 +23,7 @@ main() {
 public class TestHanYufanti {
     @TestCase
     public func test1(): Unit {
-        var arr: Array<Char> = ['雜', '災', '鍘', '氈', '戰', '癥', '鄭', '織', '幟', '製', '質', '緻', '擲', '眾', '謅', '縐', '貯', '鑄', '鄒', '鑽']
+        var arr: Array<Rune> = [r'雜', r'災', r'鍘', r'氈', r'戰', r'癥', r'鄭', r'織', r'幟', r'製', r'質', r'緻', r'擲', r'眾', r'謅', r'縐', r'貯', r'鑄', r'鄒', r'鑽']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -33,7 +34,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test2(): Unit {
-        var arr: Array<Char> = ['壓', '嚴', '鹽', '儼', '豔','贗', '鑰', '異', '囈', '繹', '癰', '嶼', '嫗', '鬱', '嶽']
+        var arr: Array<Rune> = [r'壓', r'嚴', r'鹽', r'儼', r'豔', r'贗', r'鑰', r'異', r'囈', r'繹', r'癰', r'嶼', r'嫗', r'鬱', r'嶽']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -44,7 +45,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test3(): Unit {
-        var arr: Array<Char> = ['犧', '習', '襲', '璽', '癇', '顯', '憲', '鄉', '嚮', '脅', '籲', '續', '懸', '遜']
+        var arr: Array<Rune> = [r'犧', r'習', r'襲', r'璽', r'癇', r'顯', r'憲', r'鄉', r'嚮', r'脅', r'籲', r'續', r'懸', r'遜']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -55,7 +56,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test4(): Unit {
-        var arr: Array<Char> = ['窪', '媧', '襪', '彎', '違', '葦', '衛', '窩', '蝸', '蕪', '騖']
+        var arr: Array<Rune> = [r'窪', r'媧', r'襪', r'彎', r'違', r'葦', r'衛', r'窩', r'蝸', r'蕪', r'騖']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -66,7 +67,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test5(): Unit {
-        var arr: Array<Char> = ['撻', '檯', '灘', '罎', '體', '鐵', '廳', '聽', '慟', '糰', '飩', '馱']
+        var arr: Array<Rune> = [r'撻', r'檯', r'灘', r'罎', r'體', r'鐵', r'廳', r'聽', r'慟', r'糰', r'飩', r'馱']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -77,7 +78,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test6(): Unit {
-        var arr: Array<Char> = ['灑', '薩', '傘', '澀', '曬', '瀋', '濕', '屬', '閂', '絲', '囌', '雙']
+        var arr: Array<Rune> = [r'灑', r'薩', r'傘', r'澀', r'曬', r'瀋', r'濕', r'屬', r'閂', r'絲', r'囌', r'雙']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))
@@ -88,7 +89,7 @@ public class TestHanYufanti {
 
     @TestCase
     public func test7(): Unit {
-        var arr: Array<Char> = ['讓', '饒', '嬈', '擾', '繞', '紉', '韌', '縟', '閏']
+        var arr: Array<Rune> = [r'讓', r'饒', r'嬈', r'擾', r'繞', r'紉', r'韌', r'縟', r'閏']
         let pinyinArray: ArrayList<String> = ArrayList<String>(arr.size*5)
         for( i in 0..arr.size) {
             pinyinArray.appendAll(PinyinHelper.convertToPinyinArray(arr[i], PinyinFormat.WITH_TONE_MARK))

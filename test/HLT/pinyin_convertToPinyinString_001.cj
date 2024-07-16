@@ -1,8 +1,8 @@
 //3rd_party_lib:pinyin4cj/build/pinyin4cj
 
-from std import unittest.*
-from std import unittest.testmacro.*
-from pinyin4cj import pinyin4cj.*
+import std.unittest.*
+import std.unittest.testmacro.*
+import pinyin4cj.*
 
 @Test
 public class pinyin_convertToPinyinString_001 {

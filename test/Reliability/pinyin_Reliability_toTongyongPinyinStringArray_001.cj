@@ -1,11 +1,11 @@
 //3rd_party_lib:pinyin4cj/build/pinyin4cj
 
-from std import unittest.*
-from std import unittest.testmacro.*
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
-from std import time.*
-from std import sync.*
+import std.unittest.*
+import std.unittest.testmacro.*
+import pinyin4cj.*
+import std.collection.*
+import std.time.*
+import std.sync.*
 @Test
 public class pinyin_Reliability_toTongyongPinyinStringArray_001 {
     @TestCase
@@ -21,7 +21,7 @@ public class pinyin_Reliability_toTongyongPinyinStringArray_001 {
                 var threadSuccessCount = loopCount
                 for (_ in 0..loopCount) {
                     try {
-                        @Assert(["yue4"], PinyinHelper.toTongyongPinyinStringArray('龥'))
+                        @Assert(["yue4"], PinyinHelper.toTongyongPinyinStringArray(r'龥'))
                     } catch (e: Exception) {
                         threadSuccessCount--
                         println("Exception!!!! ")
