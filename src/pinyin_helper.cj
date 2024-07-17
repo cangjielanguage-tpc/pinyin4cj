@@ -1,16 +1,19 @@
 /*
- * @Copyright (c) Huawei Technologies Co., Ltd. 2023-2023. All rights reserved.
+ * @Copyright (c) Huawei Technologies Co., Ltd. 2023-2024. All rights reserved.
  */
 
 package pinyin4cj
+
+import std.collection.HashMap
+import std.math.min
 
 let PINYIN_TABLE: HashMap<String, String> = PinyinResource.getPinyinResource()
 let MUTIL_PINYIN_TABLE: HashMap<String, String> = PinyinResource.getMutilPinyinResource()
 let TONGYONG_PINYIN_TABLE: HashMap<String, String> = PinyinResource.getTongyongPinyinResource()
 var PINYIN_SEPARATOR = "," 
-var CHINESE_LING: Char = '〇'
-let ALL_UNMARKED_VOWEL_ARRAY: Array<Char> = ['a', 'e', 'i', 'o', 'u', 'v']
-let ALL_MARKED_VOWEL_ARRAY: Array<Char> = ['ā', 'á', 'ǎ', 'à', 'ē', 'é', 'ě', 'è', 'ī', 'í', 'ǐ', 'ì', 'ō', 'ó', 'ǒ', 'ò', 'ū', 'ú', 'ǔ', 'ù', 'ǖ', 'ǘ', 'ǚ', 'ǜ']
+var CHINESE_LING: Rune = r'〇'
+let ALL_UNMARKED_VOWEL_ARRAY: Array<Rune> = [r'a', r'e', r'i', r'o', r'u', r'v']
+let ALL_MARKED_VOWEL_ARRAY: Array<Rune> = [r'ā', r'á', r'ǎ', r'à', r'ē', r'é', r'ě', r'è', r'ī', r'í', r'ǐ', r'ì', r'ō', r'ó', r'ǒ', r'ò', r'ū', r'ú', r'ǔ', r'ù', r'ǖ', r'ǘ', r'ǚ', r'ǜ']
 
 /**
  * Pinyin conversion
@@ -30,13 +33,13 @@ public class PinyinHelper {
             var hasMarkedChar: Bool = false
             var originalPinyin: String = pinyinArray[i].replace("ü", "v")
 
-            var originalCharArray: Array<Char> = originalPinyin.toRuneArray()
+            var originalCharArray: Array<Rune> = originalPinyin.toRuneArray()
             for(j in 0..originalPinyin.size) {
-                var originalChar: Char = originalCharArray[j]
-                if(UInt32(originalChar) < UInt32('a') || UInt32(originalChar) > UInt32('z')) {
+                var originalChar: Rune = originalCharArray[j]
+                if(UInt32(originalChar) < UInt32(r'a') || UInt32(originalChar) > UInt32(r'z')) {
                     var indexInAllMarked: Int64 = findArrayKeyByValue(originalChar)
                     var toneNumber: Int64 = indexInAllMarked % 4 + 1
-                    var replaceChar: Char = ALL_UNMARKED_VOWEL_ARRAY[(indexInAllMarked - indexInAllMarked % 4) / 4]
+                    var replaceChar: Rune = ALL_UNMARKED_VOWEL_ARRAY[(indexInAllMarked - indexInAllMarked % 4) / 4]
                     originalCharArray[j] = replaceChar
                     pinyinArray[i] = String(originalCharArray) + (toneNumber.toString())
                     hasMarkedChar = true
@@ -61,8 +64,8 @@ public class PinyinHelper {
         var s: String = str
         var pinyinArray: Array<String> = Array<String>()
         for(i in 0..ALL_MARKED_VOWEL_ARRAY.size) {
-            var originalChar: Char = ALL_MARKED_VOWEL_ARRAY[i]
-            var replaceChar: Char = ALL_UNMARKED_VOWEL_ARRAY[(i - i % 4) / 4]
+            var originalChar: Rune = ALL_MARKED_VOWEL_ARRAY[i]
+            var replaceChar: Rune = ALL_UNMARKED_VOWEL_ARRAY[(i - i % 4) / 4]
             s = s.replace(originalChar.toString(), replaceChar.toString())
         }
         pinyinArray = s.replace("ü", "v").split(PINYIN_SEPARATOR)
@@ -96,7 +99,7 @@ public class PinyinHelper {
      * @param format - format
      * @return Array<String>
      */
-    public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String> {  
+    public static func convertToPinyinArray(c: Rune, format: PinyinFormat): Array<String> {  
         var pinyinArray: Array<String> = Array<String>()
         if(let Some(v) <- PINYIN_TABLE.get(c.toString())) {
             if(format.getName() == "FIRST_LETTER") {
@@ -111,7 +114,7 @@ public class PinyinHelper {
         return pinyinArray
     }
 
-    static func convertToPinyinArrays(c: Char, format: PinyinFormat): Array<String> {  
+    static func convertToPinyinArrays(c: Rune, format: PinyinFormat): Array<String> {  
         var pinyinArray: Array<String> = Array<String>()
         if(let Some(v) <- PINYIN_TABLE.get(c.toString())) {
             pinyinArray = formatPinyin(v, format)
@@ -125,8 +128,8 @@ public class PinyinHelper {
      * @param str - Chinese characters
      * @return Array<String>
      */
-    static func getWords(charArray: Array<Char>): Array<String> { 
-        for(i in 1..math.min(charArray.size + 1, 6)) {
+    static func getWords(charArray: Array<Rune>): Array<String> { 
+        for(i in 1..min(charArray.size + 1, 6)) {
             let str = String(charArray.slice(0, i))
             match(MUTIL_PINYIN_TABLE.get(str)) {
                 case None => continue
@@ -145,7 +148,7 @@ public class PinyinHelper {
      * @return String
      */
     public static func convertToPinyinString(str: String, separator: String, format: PinyinFormat): String {
-        let charArray: Array<Char> = str.toRuneArray()
+        let charArray: Array<Rune> = str.toRuneArray()
         if(charArray.size == 0) {
             throw Pinyin4cjException("Please enter a word or sentence")
         }
@@ -155,7 +158,7 @@ public class PinyinHelper {
             let sliCharArray = charArray.slice(i, strLen - i)
             var commonPrefixList: Array<String> = getWords(sliCharArray) 
             if(commonPrefixList.size == 0) {
-                var c: Char = charArray[i]
+                var c: Rune = charArray[i]
                 if(ChineseHelper.isChinese(c) || c == CHINESE_LING) {
                     var pinyinArray: Array<String> = convertToPinyinArrays(c, format)
                     if(pinyinArray.size > 0) {
@@ -210,7 +213,7 @@ public class PinyinHelper {
 
     static func convertToPinyinStringResult(buf: StringBuilder, separator: String): String {
         var res: String = buf.toString()
-        let charArray: Array<Char> = res.toRuneArray()
+        let charArray: Array<Rune> = res.toRuneArray()
         if(separator.toRuneArray().size != 0 && (charArray[res.toRuneArray().size - 1].toString() == separator)) {
             let lastIndex: Int64 = res.lastIndexOf(separator.toArray()[0]).getOrThrow()
             res = res[..lastIndex]
@@ -245,7 +248,7 @@ public class PinyinHelper {
      * @param c - Chinese characters
      * @return Bool
      */
-    public static func hasMultiPinyin(c: Char): Bool {
+    public static func hasMultiPinyin(c: Rune): Bool {
         if(!ChineseHelper.isChinese(c)) {
             throw Pinyin4cjException("Please enter a Chinese character")
         } 
@@ -273,7 +276,7 @@ public class PinyinHelper {
         MUTIL_PINYIN_TABLE.putAll(dict)   
     }
 
-    static func findArrayKeyByValue(ch: Char): Int64 {
+    static func findArrayKeyByValue(ch: Rune): Int64 {
         for(i in 0..ALL_MARKED_VOWEL_ARRAY.size) {
             if (ALL_MARKED_VOWEL_ARRAY[i] == ch) {
                 return i
@@ -289,7 +292,7 @@ public class PinyinHelper {
      * @param char - Simplified or Traditional Characters
      * @return Array<String>
      */
-    public static func toTongyongPinyinStringArray(char: Char): Array<String> {
+    public static func toTongyongPinyinStringArray(char: Rune): Array<String> {
         let pinyinArray: Array<String> = convertToPinyinArray(char, PinyinFormat.WITH_TONE_NUMBER)
         var res: Array<String> = Array<String>(pinyinArray.size, item: "")
         for(i in 0..pinyinArray.size) {

@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v0.0.2-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.51.4-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.53.4-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-99.0%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -99,7 +99,7 @@ pinyin4cj_build.bat
 示例代码如下：
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
     var pinyin: String = ChineseHelper.convertToSimplifiedChinese("臺，喪，麗")
@@ -119,7 +119,7 @@ main() {
 示例代码如下：
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
     var pinyin: String = ChineseHelper.convertToTraditionalChinese("我是中国人")
@@ -139,7 +139,7 @@ main() {
 示例代码如下：
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
     var pinyin: String = PinyinHelper.convertToPinyinString("我是中国共产主义接班人。", " ")
@@ -159,7 +159,7 @@ wǒ shì zhōng guó gòng chǎn zhǔ yì jiē bān rén 。
 示例代码如下：
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
     var pinyin: String = PinyinHelper.convertToPinyinString("我是中国共产主义接班人。", " ", PinyinFormat.WITH_TONE_NUMBER)
@@ -179,8 +179,8 @@ wo3 shi4 zhong1 guo2 gong4 chan3 zhu3 yi4 jie1 ban1 ren2 。
 示例代码如下：
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
+import pinyin4cj.*
+import std.collection.*
 
 main() {
     let map: HashMap<String, String> = HashMap<String, String>([("上", "shǎng")])
@@ -202,8 +202,8 @@ shǎng wǔ
 示例代码如下：
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
+import pinyin4cj.*
+import std.collection.*
 
 main() {
     let map: HashMap<String, String> = HashMap<String, String>([("阿弥陀佛", "ā,mí,tuó,fó")])
@@ -224,11 +224,11 @@ main() {
 示例代码如下：
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
+import pinyin4cj.*
+import std.collection.*
 
 main() {
-    let map: HashMap<Char, Char> = HashMap<Char, Char>([('癥', '症')])
+    let map: HashMap<Rune, Rune> = HashMap<Rune, Rune>([(r'癥', r'症')])
     ChineseHelper.addChineseDictResource(map)
     var pinyin: String = ChineseHelper.convertToSimplifiedChinese("癥")
     println(pinyin)
@@ -247,10 +247,10 @@ main() {
 示例代码如下：
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
-    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray('长', PinyinFormat.WITH_TONE_MARK)
+    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray(r'长', PinyinFormat.WITH_TONE_MARK)
     println(pinyin)
     return 0
 }
@@ -266,10 +266,10 @@ main() {
 示例代码如下：
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
-    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray('嚴', PinyinFormat.WITH_TONE_MARK)
+    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray(r'嚴', PinyinFormat.WITH_TONE_MARK)
     println(pinyin)
     return 0
 }
@@ -285,11 +285,11 @@ main() {
 示例代码如下：
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
-    var simplePinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray('傳')
-    var traditionalPinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray('传')
+    var simplePinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray(r'傳')
+    var traditionalPinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray(r'传')
     println(simplePinyin)
     println(traditionalPinyin)
     return 0
@@ -301,6 +301,12 @@ main() {
 ["chuan2", "jhuan4"]
 ["chuan2", "jhuan4"]
 ```
+
+## 约束与限制
+
+在下述版本验证通过：
+
+    Cangjie Version: 0.53.4
 
 ## 开源协议
 MIT License

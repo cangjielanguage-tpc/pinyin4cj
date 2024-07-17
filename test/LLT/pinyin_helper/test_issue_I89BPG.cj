@@ -1,8 +1,8 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
+import pinyin4cj.*
+import std.collection.*
 
 main() {
     try {

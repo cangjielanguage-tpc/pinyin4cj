@@ -1,7 +1,7 @@
 //3rd_party_lib:pinyin4cj/build/pinyin4cj
 
-from pinyin4cj import pinyin4cj.*
-from fuzz import fuzz.*
+import pinyin4cj.*
+import fuzz.fuzz.*
 
 
 var returnFlag: Int32 = 0

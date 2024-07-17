@@ -66,7 +66,7 @@ public class ChineseHelper {
 ##### 繁体转简体
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
     var pinyin: String = ChineseHelper.convertToSimplifiedChinese("臺，喪，麗")
@@ -83,7 +83,7 @@ main() {
 ##### 简体转繁体
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
     var pinyin: String = ChineseHelper.convertToTraditionalChinese("我是中国人")
@@ -122,7 +122,7 @@ public class PinyinHelper {
 #### 1.2.2 示例
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
     var pinyin: String = PinyinHelper.convertToPinyinString("我是中国共产主义接班人。", " ")
@@ -177,7 +177,7 @@ public class PinyinHelper {
 #### 1.3.2 包含简体中文字符转拼音示例
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
     var pinyin: String = PinyinHelper.convertToPinyinString("我是中国共产主义接班人。", " ", PinyinFormat.WITH_TONE_NUMBER)
@@ -194,7 +194,7 @@ wo3 shi4 zhong1 guo2 gong4 chan3 zhu3 yi4 jie1 ban1 ren2 。
 #### 1.3.3 包含繁体中文字符转拼音示例
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
     var pinyin: String = PinyinHelper.convertToPinyinStringTraditional("我是中國共產主義接班人。", " ", PinyinFormat.WITH_TONE_NUMBER)
@@ -254,8 +254,8 @@ public class ChineseHelper {
 ##### 自定义拼音字典
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
+import pinyin4cj.*
+import std.collection.*
 
 main() {
     let map: HashMap<String, String> = HashMap<String, String>([("上", "shǎng")])
@@ -273,8 +273,8 @@ shǎng wǔ
 ##### 自定义拼音组合字典
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
+import pinyin4cj.*
+import std.collection.*
 
 main() {
     let map: HashMap<String, String> = HashMap<String, String>([("阿弥陀佛", "ā,mí,tuó,fó")])
@@ -292,11 +292,11 @@ main() {
 ##### 自定义中文字典
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
+import pinyin4cj.*
+import std.collection.*
 
 main() {
-    let map: HashMap<Char, Char> = HashMap<Char, Char>([('癥', '症')])
+    let map: HashMap<Rune, Rune> = HashMap<Rune, Rune>([(r'癥', r'症')])
     ChineseHelper.addChineseDictResource(map)
     var pinyin: String = ChineseHelper.convertToSimplifiedChinese("癥")
     println(pinyin)
@@ -326,17 +326,17 @@ public class PinyinHelper {
      * 返回值 Array<String> 
      *   - 若 c 为非汉字字符，返回 []
      */
-    public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String>
+    public static func convertToPinyinArray(c: Rune, format: PinyinFormat): Array<String>
 }
 ```
 
 #### 1.5.2 示例
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
-    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray('长', PinyinFormat.WITH_TONE_MARK)
+    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray(r'长', PinyinFormat.WITH_TONE_MARK)
     println(pinyin)
     return 0
 }
@@ -365,17 +365,17 @@ public class PinyinHelper {
      * 返回值 Array<String>
      *   - 若 c 为非汉字字符，返回 []
      */
-    public static func convertToPinyinArray(c: Char, format: PinyinFormat): Array<String>
+    public static func convertToPinyinArray(c: Rune, format: PinyinFormat): Array<String>
 }
 ```
 
 #### 1.6.2 示例
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
-    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray('嚴', PinyinFormat.WITH_TONE_MARK)
+    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray(r'嚴', PinyinFormat.WITH_TONE_MARK)
     println(pinyin)
     return 0
 }
@@ -403,18 +403,18 @@ public class PinyinHelper {
      *        - 是汉字返回通用拼音
      *        - 不是汉字返回 []
      */
-    public static func toTongyongPinyinStringArray(char: Char): Array<String>
+    public static func toTongyongPinyinStringArray(char: Rune): Array<String>
 }
 ```
 
 #### 1.7.2 示例
 
 ```cangjie
-from pinyin4cj import pinyin4cj.*
+import pinyin4cj.*
 
 main() {
-    var simplePinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray('傳')
-    var traditionalPinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray('传')
+    var simplePinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray(r'傳')
+    var traditionalPinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray(r'传')
     println(simplePinyin)
     println(traditionalPinyin)
     return 0
@@ -442,7 +442,7 @@ public class ChineseHelper {
      * 参数 c - 字符
      * 返回值 Bool
      */
-    public static func isTraditionalChinese(c: Char): Bool 
+    public static func isTraditionalChinese(c: Rune): Bool 
 
     /**
      * 判断字符是否是汉字
@@ -450,7 +450,7 @@ public class ChineseHelper {
      * 参数 c - 字符
      * 返回值 Bool
      */
-    public static func isChinese(c: Char): Bool
+    public static func isChinese(c: Rune): Bool
 
     /**
      * 判断字符串是否包含汉字
@@ -513,7 +513,7 @@ public class PinyinHelper {
      * 参数 c - 字符
      * 返回值 Bool
      */
-    public static func hasMultiPinyin(c: Char): Bool
+    public static func hasMultiPinyin(c: Rune): Bool
 
 }
 ```

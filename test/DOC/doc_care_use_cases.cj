@@ -1,10 +1,10 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
-from std import unittest.*
-from std import unittest.testmacro.*
+import pinyin4cj.*
+import std.collection.*
+import std.unittest.*
+import std.unittest.testmacro.*
 
 main() {
     let testPinyinHelper = TestPinyinHelper()
@@ -72,7 +72,7 @@ public class TestPinyinHelper {
 
     @TestCase
     public func testCustomChineseDictionary(): Unit {
-        let map: HashMap<Char, Char> = HashMap<Char, Char>([('癥', '症')])
+        let map: HashMap<Rune, Rune> = HashMap<Rune, Rune>([(r'癥', r'症')])
         ChineseHelper.addChineseDictResource(map)
         let res1: String = ChineseHelper.convertToSimplifiedChinese("癥")
         @Assert("症", res1)
@@ -80,20 +80,20 @@ public class TestPinyinHelper {
 
     @TestCase
     public func testConvertPolyphonicCharactersToPinyin(): Unit {
-        let res1: Array<String> = PinyinHelper.convertToPinyinArray('长', PinyinFormat.WITH_TONE_MARK)
+        let res1: Array<String> = PinyinHelper.convertToPinyinArray(r'长', PinyinFormat.WITH_TONE_MARK)
         @Assert(["cháng", "zhǎng"], res1)
     }
 
     @TestCase
     public func testConvertSimplifiedToPinyinSet(): Unit {
-        let res1: Array<String> = PinyinHelper.convertToPinyinArray('嚴', PinyinFormat.WITH_TONE_MARK)
+        let res1: Array<String> = PinyinHelper.convertToPinyinArray(r'嚴', PinyinFormat.WITH_TONE_MARK)
         @Assert(["yán"], res1)
     }
 
     @TestCase
     public func testConvertUniversalPinyin(): Unit {
-        var traditionalPinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray('傳')
-        var simplePinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray('传')
+        var traditionalPinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray(r'傳')
+        var simplePinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray(r'传')
         @Assert(["chuan2", "jhuan4"], traditionalPinyin)
         @Assert(["chuan2", "jhuan4"], simplePinyin)
     }

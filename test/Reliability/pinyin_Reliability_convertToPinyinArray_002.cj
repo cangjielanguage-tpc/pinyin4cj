@@ -1,11 +1,11 @@
 //3rd_party_lib:pinyin4cj/build/pinyin4cj
 
-from std import unittest.*
-from std import unittest.testmacro.*
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
-from std import time.*
-from std import sync.*
+import std.unittest.*
+import std.unittest.testmacro.*
+import pinyin4cj.*
+import std.collection.*
+import std.time.*
+import std.sync.*
 @Test
 public class pinyin_Reliability_convertToPinyinArray_002 {
     @TestCase
@@ -14,7 +14,7 @@ public class pinyin_Reliability_convertToPinyinArray_002 {
         let loopCount = 10000
         let futures = ArrayList<Future<Int64>>()
 
-        var arrstr = PinyinHelper.convertToPinyinArray('稱', PinyinFormat.WITH_TONE_MARK)
+        var arrstr = PinyinHelper.convertToPinyinArray(r'稱', PinyinFormat.WITH_TONE_MARK)
         println("arrstr = ${arrstr}")
 
         let successCount = AtomicInt64(0)
@@ -24,7 +24,7 @@ public class pinyin_Reliability_convertToPinyinArray_002 {
                 var threadSuccessCount = loopCount
                 for (_ in 0..loopCount) {
                     try {
-                        var arrstr = PinyinHelper.convertToPinyinArray('稱', PinyinFormat.WITH_TONE_MARK)
+                        var arrstr = PinyinHelper.convertToPinyinArray(r'稱', PinyinFormat.WITH_TONE_MARK)
                         @Assert(arrstr.toString(),"[chēng, chèn, chèng]")
                     } catch (e: Exception) {
                         threadSuccessCount--

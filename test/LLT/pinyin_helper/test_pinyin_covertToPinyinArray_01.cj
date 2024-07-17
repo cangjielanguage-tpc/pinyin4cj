@@ -1,10 +1,11 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from pinyin4cj import pinyin4cj.*
-from std import collection.*
-from std import unittest.*
-from std import unittest.testmacro.*
+import pinyin4cj.*
+import std.collection.*
+import std.unittest.*
+import std.unittest.testmacro.*
+
 
 main() {
     let testPinyinHelper = TestPinyinHelper()
@@ -16,8 +17,8 @@ main() {
 public class TestPinyinHelper {
     @TestCase
     public func test1(): Unit {
-        @Assert(["cháng", "zhǎng"], PinyinHelper.convertToPinyinArray('长', PinyinFormat.WITH_TONE_MARK))
-        @Assert(["yán"], PinyinHelper.convertToPinyinArray('嚴', PinyinFormat.WITH_TONE_MARK))
+        @Assert(["cháng", "zhǎng"], PinyinHelper.convertToPinyinArray(r'长', PinyinFormat.WITH_TONE_MARK))
+        @Assert(["yán"], PinyinHelper.convertToPinyinArray(r'嚴', PinyinFormat.WITH_TONE_MARK))
     }
 
 }

@@ -1,13 +1,13 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from pinyin4cj import pinyin4cj.*
-from std import unittest.*
-from std import unittest.testmacro.*
+import pinyin4cj.*
+import std.unittest.*
+
 
 main() {
     try {
-        PinyinHelper.hasMultiPinyin('。')
+        PinyinHelper.hasMultiPinyin(r'。')
     }catch(e: Pinyin4cjException) {
         if(!e.toString().contains("Please enter a Chinese character")) {
             return -2
