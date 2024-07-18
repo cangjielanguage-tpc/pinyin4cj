@@ -309,7 +309,8 @@ main() {
     Cangjie Version: 0.53.4
 
 ## 开源协议
-MIT License
+
+本项目基于 [MIT License](./LICENSE)，请自由的享受和参与开源。
 
 ## 参与贡献
 
