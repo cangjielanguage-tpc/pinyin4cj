@@ -14,9 +14,6 @@
 
 Pinyin4cj 是一个支持将汉字转换成拼音的三方库，输出的拼音格式可以自定义设置。
 
-    参考地址：
-    https://github.com/Kaifuny/pinyin4js
-
 ### 特性
 
 - 🚀 支持词、句转换成拼音
