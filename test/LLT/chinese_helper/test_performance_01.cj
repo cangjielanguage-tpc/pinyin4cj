@@ -15,11 +15,11 @@ main() {
         var str: String = getStr(len/10)
         for (num in nums) {
             var s = ""
-            let start = DateTime.now()
+            let start = DateTime.now().nanosecond
             for (_ in 0..num) {
                PinyinHelper.convertToPinyinString(str, " ", PinyinFormat.WITH_TONE_MARK)
             }
-            let end = Duration.since(start).toNanoseconds()
+            let end = DateTime.now().nanosecond - start
             println("[ PASSED ] CASE: TestSuitePinyin_${len}_${num} (${end} ns, ${end/num} ns/op)\n")
             println(s)
         }
