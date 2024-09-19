@@ -5,7 +5,7 @@
 package pinyin4cj
 
 import std.collection.HashMap
-import std.math.min
+import std.core.min
 
 let PINYIN_TABLE: HashMap<String, String> = PinyinResource.getPinyinResource()
 let MUTIL_PINYIN_TABLE: HashMap<String, String> = PinyinResource.getMutilPinyinResource()
@@ -294,7 +294,7 @@ public class PinyinHelper {
      */
     public static func toTongyongPinyinStringArray(char: Rune): Array<String> {
         let pinyinArray: Array<String> = convertToPinyinArray(char, PinyinFormat.WITH_TONE_NUMBER)
-        var res: Array<String> = Array<String>(pinyinArray.size, item: "")
+        var res: Array<String> = Array<String>(pinyinArray.size, repeat: "")
         for(i in 0..pinyinArray.size) {
             var word: String = ""
             let num: String = pinyinArray[i][(pinyinArray[i].toRuneArray().size - 1)..]
