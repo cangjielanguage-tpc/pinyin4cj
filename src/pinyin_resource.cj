@@ -5,7 +5,7 @@
 package pinyin4cj
 
 import std.collection.HashMap
-import std.fs.{Path, File, OpenOption}
+import std.fs.*
 import std.io.StringReader
 
 /*
@@ -21,7 +21,7 @@ class PinyinResource {
     static func getPinyinResource(): HashMap<String, String> {
         var getFilePath: Path = getFilePath()
         let resourceName: String = getFilePath.join("pinyin.dict.txt").toString()
-        if(!File.exists(resourceName)) {
+        if(!exists(resourceName)) {
             throw Pinyin4cjException("The pinyin.dict.txt file does not exist")
         }
         let file: File = File(resourceName, Open(true, false)) 
