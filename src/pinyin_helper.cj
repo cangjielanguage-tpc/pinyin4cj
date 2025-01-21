@@ -263,7 +263,7 @@ public class PinyinHelper {
      * @return Unit
      */
     public static func addPinyinDictResource(dict: HashMap<String, String>): Unit {
-        PINYIN_TABLE.putAll(dict)
+        PINYIN_TABLE.add(all: dict)
     }
 
     /**
@@ -273,7 +273,7 @@ public class PinyinHelper {
      * @return Unit
      */
     public static func addMutilPinyinDictResource(dict: HashMap<String, String>): Unit {
-        MUTIL_PINYIN_TABLE.putAll(dict)   
+        MUTIL_PINYIN_TABLE.add(all: dict)   
     }
 
     static func findArrayKeyByValue(ch: Rune): Int64 {
