@@ -24,7 +24,7 @@ class PinyinResource {
         if(!exists(resourceName)) {
             throw Pinyin4cjException("The pinyin.dict.txt file does not exist")
         }
-        let file: File = File(resourceName, Open(true, false)) 
+        let file: File = File(resourceName, ReadWrite) 
         let map = HashMap<String, String>(22000)
         var bufferedReader: StringReader<File> = StringReader(file)
         while (true) {
@@ -34,7 +34,7 @@ class PinyinResource {
                     match (bufferedReader.readln()) {
                         case None => throw Pinyin4cjException("Invalid value")
                         case Some(value) => 
-                            map.put(key,value)
+                            map.add(key,value)
                     }
             }
         }
