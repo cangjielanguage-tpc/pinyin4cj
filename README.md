@@ -3,16 +3,16 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.0.2-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.58.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.59.6-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-99.0%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
 
 ## 介绍
 
-Pinyin4cj 是一个支持将汉字转换成拼音的三方库，输出的拼音格式可以自定义设置。
+pinyin4cj 是一个支持将汉字转换成拼音的三方库，输出的拼音格式可以自定义设置。
 
 ### 特性
 
@@ -303,7 +303,7 @@ main() {
 
 在下述版本验证通过：
 
-    Cangjie Version: 0.58.3
+    Cangjie Version: 0.59.6
 
 ## 开源协议
 
