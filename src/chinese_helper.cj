@@ -135,6 +135,6 @@ public class ChineseHelper {
      * @return Unit
      */
     public static func addChineseDictResource(dict: HashMap<Rune, Rune>): Unit {
-        CHINESE_MAP.add(all: dict)
+        CHINESE_MAP.putAll(dict)
     }
 }
