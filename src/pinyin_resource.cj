@@ -5,7 +5,7 @@
 package pinyin4cj
 
 import std.collection.HashMap
-import std.fs.*
+import std.fs.{Path, File, OpenOption}
 import std.io.StringReader
 
 /*
@@ -21,10 +21,10 @@ class PinyinResource {
     static func getPinyinResource(): HashMap<String, String> {
         var getFilePath: Path = getFilePath()
         let resourceName: String = getFilePath.join("pinyin.dict.txt").toString()
-        if(!exists(resourceName)) {
+        if(!File.exists(resourceName)) {
             throw Pinyin4cjException("The pinyin.dict.txt file does not exist")
         }
-        let file: File = File(resourceName, ReadWrite) 
+        let file: File = File(resourceName, Open(true, false)) 
         let map = HashMap<String, String>(22000)
         var bufferedReader: StringReader<File> = StringReader(file)
         while (true) {
@@ -34,7 +34,7 @@ class PinyinResource {
                     match (bufferedReader.readln()) {
                         case None => throw Pinyin4cjException("Invalid value")
                         case Some(value) => 
-                            map.add(key,value)
+                            map.put(key,value)
                     }
             }
         }
