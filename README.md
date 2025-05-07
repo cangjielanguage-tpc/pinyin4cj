@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.0.2-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.0.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.59.6-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.60.5-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-99.0%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -78,15 +78,9 @@ pinyin4cj 是一个支持将汉字转换成拼音的三方库，输出的拼音�
 
 ### 编译构建
 
-1. linux x86_64 编译
-
-```shell
-./pinyin4cj_build.sh
-```
-
-2. Windows 编译
-```shell
-pinyin4cj_build.bat
+```cangjie
+cjpm clean
+cjpm build
 ```
 
 ### 功能示例
