@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.0.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.0.4-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.60.5-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v1.0.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-99.0%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -62,7 +62,7 @@ pinyin4cj 是一个支持将汉字转换成拼音的三方库，输出的拼音�
 ├── pinyin4cj_build.bat
 ├── pinyin4cj_build.sh
 ├── README.md
-├── README.OpenSource
+└── README.OpenSource
 ```
 
 - `doc` 存放库的特性文档
@@ -297,7 +297,7 @@ main() {
 
 在下述版本验证通过：
 
-    Cangjie Version: 0.59.6
+    Cangjie Version: 1.0.0
 
 ## 开源协议
 
