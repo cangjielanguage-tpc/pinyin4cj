@@ -5,12 +5,12 @@
 
 package pinyin4cj
 
-import std.process.*
+import std.env.*
 import std.fs.*
 
 @When[os == "Linux"]
 func getFilePath(): Path {
-    let env: Option<String> = Process.current.getEnv("LD_LIBRARY_PATH")
+    let env: Option<String> = getVariable("LD_LIBRARY_PATH")
     match(env) {
         case Some(str) =>
             if (str.isEmpty() && str.size < 0 && !str.contains(":")) {
