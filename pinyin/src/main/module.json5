@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "pinyin",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}

@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.0.4-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.0.5-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.0.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-99.0%25-brightgreen" style="display: inline-block;" />
@@ -32,272 +32,86 @@ pinyin4cj 是一个支持将汉字转换成拼音的三方库，输出的拼音�
 
 ## 软件架构
 
-![design](./doc/assets/pinyin4cj.png)
-
 ### 源码目录
 
 ```shell
-.
-├── doc
-├── resource
-├── ├── pinyin.dict.txt
-├── src
-│   ├── chinese_helper.cj
-│   ├── chinese_dict.cj
-│   ├── get_file_path.cj
-│   ├── import.cj
-│   ├── mutil_pinyin.dict.cj
-│   ├── pinyin_format.cj
-│   ├── pinyin_helper.cj
-│   ├── pinyin_resource.cj
-│   ├── tongyong_pinyin_dict.cj
-└── test
-│   ├── HLT
-│   ├── LLT
-│   └── UT
-├── CHANGELOG.md
-├── gitee_gate.cfg
-├── LICENSE.txt
-├── module.json
-├── pinyin4cj_build.bat
-├── pinyin4cj_build.sh
-├── README.md
-└── README.OpenSource
+├─ AppScope
+├─ doc                      # API文档        
+├─ entry                    # 示例代码文件夹                  
+├─ pinyin                   # pinyin 库源目录                  
+│  └─ src
+│      └─ main
+│          ├─ cangjie       # cangjie 源码
+│          ├─ ets           # ets 源码                       
+│          └─ resources     # 资源文件
+├─ hvigor                   # 构建工具目录
+└─ README.md                # pinyin 介绍及使用说明
 ```
 
-- `doc` 存放库的特性文档
-- `resource` 存放拼音字典
-- `src` 是库源码目录
-- `test` 存放 HLT 测试用例、LLT 自测用例和 UT 单元测试用例
-
+- `pinyin` 工程模块 - 编译生成一个har包
+- `pinyin src` 模块代码目录
+- `pinyin src main` 模块项目目录
+- `pinyin src main cangjie` 仓颉代码目录
+- `pinyin src main ets` ets代码目录
+- `pinyin src main resources` 资源文件目录
+- 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](./doc/feature_api.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/pinyin4cj/blob/pinyin4cj_hybrid_cangjie-plugin-5.1.0.828/doc/feature_api.md)
 
 ## 使用说明
 
 ### 编译构建
 
-```cangjie
-cjpm clean
-cjpm build
-```
+1. 下载安装
+   通过中心仓下载安装
+
+      ```sh
+      ohpm install @cangjie-tpc/pinyin
+      ```
+
+2. 在项目中使用 pinyin 项目
+
+   ```arkts
+   import { ChineseHelper, PinyinFormat, PinyinHelper } from '@cangjie-tpc/pinyin'
+   ```
 
 ### 功能示例
 
-#### 繁体转简体
+```ets
+import { ChineseHelper, PinyinFormat, PinyinHelper } from '@cangjie-tpc/pinyin'
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
-示例代码如下：
-
-```cangjie
-import pinyin4cj.*
-
-main() {
-    var pinyin: String = ChineseHelper.convertToSimplifiedChinese("臺，喪，麗")
-    println(pinyin)
-    return 0
+@Entry
+@Component
+struct Index {
+  build() {
+    Column() {
+      Column(){
+        Row(){
+          Button("convertToPinyinStringFormat")
+            .type(ButtonType.Capsule)
+            .fontSize(16)
+            .fontWeight(FontWeight.Bold)
+            .onClick(() => {
+              let c = new PinyinHelper()
+              let pinyin = c.convertToPinyinStringFormat("河南麥收季遇10年最嚴重“爛場雨”，灾情如何？怎樣應對？", " ", "WITH_TONE_MARK")
+              hilog.error(0X000000, "pinyin", `${pinyin}`)
+            })
+        }
+        .margin({ top: 10 })                    
+      }
+    }
+    .height('100%')
+    .width('100%')
+  }
 }
-```
-
-执行结果如下：
-
-```shell
-台，丧，丽
-```
-
-#### 简体转繁体
-
-示例代码如下：
-
-```cangjie
-import pinyin4cj.*
-
-main() {
-    var pinyin: String = ChineseHelper.convertToTraditionalChinese("我是中国人")
-    println(pinyin)
-    return 0
-}
-```
-
-执行结果如下：
-
-```shell
-我是中國人
-```
-
-#### 词、句转换成拼音
-
-示例代码如下：
-
-```cangjie
-import pinyin4cj.*
-
-main() {
-    var pinyin: String = PinyinHelper.convertToPinyinString("我是中国共产主义接班人。", " ")
-    println(pinyin)
-    return 0
-}
-```
-
-执行结果如下：
-
-```shell
-wǒ shì zhōng guó gòng chǎn zhǔ yì jiē bān rén 。
-```
-
-#### 自定义输出格式
-
-示例代码如下：
-
-```cangjie
-import pinyin4cj.*
-
-main() {
-    var pinyin: String = PinyinHelper.convertToPinyinString("我是中国共产主义接班人。", " ", PinyinFormat.WITH_TONE_NUMBER)
-    println(pinyin)
-    return 0
-}
-```
-
-执行结果如下：
-
-```shell
-wo3 shi4 zhong1 guo2 gong4 chan3 zhu3 yi4 jie1 ban1 ren2 。
-```
-
-#### 添加自定义拼音字典
-
-示例代码如下：
-
-```cangjie
-import pinyin4cj.*
-import std.collection.*
-
-main() {
-    let map: HashMap<String, String> = HashMap<String, String>([("上", "shǎng")])
-    PinyinHelper.addPinyinDictResource(map)
-    var pinyin: String = PinyinHelper.convertToPinyinString("上午", " ", PinyinFormat.WITH_TONE_MARK)
-    println(pinyin)
-    return 0
-}
-```
-
-执行结果如下：
-
-```shell
-shǎng wǔ
-```
-
-#### 添加自定义拼音组合字典
-
-示例代码如下：
-
-```cangjie
-import pinyin4cj.*
-import std.collection.*
-
-main() {
-    let map: HashMap<String, String> = HashMap<String, String>([("阿弥陀佛", "ā,mí,tuó,fó")])
-    PinyinHelper.addMutilPinyinDictResource(map)
-    var pinyin: String = PinyinHelper.convertToPinyinString("阿弥陀佛", " ", PinyinFormat.WITH_TONE_MARK)
-    println(pinyin)
-}
-```
-
-执行结果如下：
-
-```shell
-ā mí tuó fó
-```
-
-#### 添加自定义中文字典
-
-示例代码如下：
-
-```cangjie
-import pinyin4cj.*
-import std.collection.*
-
-main() {
-    let map: HashMap<Rune, Rune> = HashMap<Rune, Rune>([(r'癥', r'症')])
-    ChineseHelper.addChineseDictResource(map)
-    var pinyin: String = ChineseHelper.convertToSimplifiedChinese("癥")
-    println(pinyin)
-    return 0
-}
-```
-
-执行结果如下：
-
-```shell
-症
-```
-
-#### 多音字转拼音集合
-
-示例代码如下：
-
-```cangjie
-import pinyin4cj.*
-
-main() {
-    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray(r'长', PinyinFormat.WITH_TONE_MARK)
-    println(pinyin)
-    return 0
-}
-```
-执行结果如下：
-
-```
-["cháng", "zhǎng"]
-```
-
-#### 繁简体转拼音
-
-示例代码如下：
-
-```cangjie
-import pinyin4cj.*
-
-main() {
-    var pinyin: Array<String> = PinyinHelper.convertToPinyinArray(r'嚴', PinyinFormat.WITH_TONE_MARK)
-    println(pinyin)
-    return 0
-}
-```
-执行结果如下：
-
-```
-["yán"]
-```
-
-#### 繁简体转通用拼音
-
-示例代码如下：
-
-```cangjie
-import pinyin4cj.*
-
-main() {
-    var simplePinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray(r'傳')
-    var traditionalPinyin: Array<String> = PinyinHelper.toTongyongPinyinStringArray(r'传')
-    println(simplePinyin)
-    println(traditionalPinyin)
-    return 0
-}
-```
-执行结果如下：
-
-```
-["chuan2", "jhuan4"]
-["chuan2", "jhuan4"]
 ```
 
 ## 约束与限制
 
-在下述版本验证通过：
-
-    Cangjie Version: 1.0.0
+ - DevEco Studio  5.1.0.828SP1
+ - Cangjie Plugin Canary  5.1.0.828 
 
 ## 开源协议
 
@@ -305,4 +119,4 @@ main() {
 
 ## 参与贡献
 
-欢迎给我们提交PR，欢迎给我们提交Issue，欢迎参与任何形式的贡献。
+欢迎给我们提交 PR，欢迎给我们提交 Issue，欢迎参与任何形式的贡献。
