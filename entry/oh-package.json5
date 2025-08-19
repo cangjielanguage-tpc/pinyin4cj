@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@cangjie-tpc/pinyin": "file:../pinyin"
+    "@cangjie-tpc/pinyin": "file:libs/pinyin.har"
   }
 }
 
