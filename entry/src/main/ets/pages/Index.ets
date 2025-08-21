@@ -1,210 +1,51 @@
-import { ChineseHelper, PinyinFormat, PinyinHelper } from '@cangjie-tpc/pinyin'
-import { hilog } from '@kit.PerformanceAnalysisKit'
+import router from '@ohos.router'
 
 @Entry
 @Component
 struct Index {
+  private arr: string[] = [
+    "pages/HLT/convertToPinyinArray_01",
+    "pages/HLT/convertToPinyinArray_02",
+    "pages/HLT/convertToPinyinString_01",
+    "pages/HLT/convertToPinyinStringFormat",
+    "pages/HLT/convertToPinyinStringTraditional",
+    "pages/HLT/toTongyongPinyinStringArray",
+    "pages/HLT/convertToSimplifiedChinese_01",
+    "pages/HLT/convertToTraditionalChinese_01",
+    "pages/HLT/getShortPinyin",
+    "pages/HLT/hasMultiPinyin",
+    "pages/HLT/isChinese",
+    "pages/HLT/containsChinese",
+    "pages/HLT/isTraditionalChinese",
+    "pages/HLT/addChineseDictResource",
+    "pages/HLT/addMutilPinyinDictResource",
+    "pages/HLT/addPinyinDictResource"
+  ]
+
   build() {
     Column() {
-      Column(){
-        Row(){
-          Text("ChineseHelperArkts test")
-        }
-        .margin({ top: 10 })
-        Row() {
-          Button("convertToSimplifiedChinese")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new ChineseHelper()
-              let pinyin = c.convertToSimplifiedChinese("臺，喪，麗")
-              hilog.error(0, "", pinyin)
-            })
-        }
-        .margin({ top: 10 })
-        Row(){
-          Button("convertToTraditionalChinese")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new ChineseHelper()
-              let pinyin = c.convertToTraditionalChinese("台，丧，丽")
-              hilog.error(0, "", pinyin)
-            })
-        }
-        .margin({ top: 10 })
-        Row() {
-          Button("isTraditionalChinese")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new ChineseHelper()
-              let pinyin = c.isTraditionalChinese("臺")
-              hilog.error(0, "", `${pinyin}`)
-            })
-        }
-        .margin({ top: 10 })
-        Row(){
-          Button("isChinese")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new ChineseHelper()
-              let pinyin = c.isChinese("a")
-              hilog.error(0, "", `${pinyin}`)
-            })
-        }
-        .margin({ top: 10 })
-        Row() {
-          Button("containsChinese")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new ChineseHelper()
-              let pinyin = c.containsChinese("adasf你好")
-              hilog.error(0, "", `${pinyin}`)
-            })
-        }
-        .margin({ top: 10 })
-        Row(){
-          Button("addChineseDictResource")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let map: Map<string, string> = new Map([['癥', '症'], ['臺', '一']])
-              let c = new ChineseHelper()
-              c.addChineseDictResource(map)
-              hilog.error(0, "", `${c.convertToSimplifiedChinese("癥")}---${c.convertToSimplifiedChinese("臺")}`)
-            })
-        }
-        .margin({ top: 10 })
+      Text("pinyin4cj ArKTS test ").height(50).width("100%").backgroundColor("#483d8b").textAlign(TextAlign.Center).fontColor("#ffffff").margin({bottom: 5})
+      List({ space: 20, initialIndex: 0 }) {
+        ForEach(this.arr, (item: string) => {
+          ListItem() {
+            Text('' + item)
+              .width('100%').height(45).fontSize(16)
+              .textAlign(TextAlign.Center).borderRadius(10).backgroundColor(0xFFFFFF)
+          }.onClick(() => {
+            router.push({ url: item })
+          })
+        }, (item: string) => item)
       }
-
-      Column(){
-        Row(){
-          Text("PinyinHelperArkts test")
-        }
-        .margin({ top: 10 })
-        Row() {
-          Button("convertToPinyinArray")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new PinyinHelper()
-              let pinyin: Array<string> = c.convertToPinyinArray('长', PinyinFormat.WITH_TONE_MARK)
-              hilog.error(0, "", `${pinyin}`)
-            })
-        }
-        .margin({ top: 10 })
-        Row(){
-          Button("convertToPinyinStringFormat")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new PinyinHelper()
-              let pinyin = c.convertToPinyinStringFormat("河南麥收季遇10年最嚴重“爛場雨”，灾情如何？怎樣應對？", " ", "WITH_TONE_MARK")
-              hilog.error(0, "", `${pinyin}`)
-            })
-        }
-        .margin({ top: 10 })
-        Row() {
-          Button("convertToPinyinStringTraditional")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new PinyinHelper()
-              let pinyin = c.convertToPinyinStringTraditional("我是中國共產主義接班人。", " ", PinyinFormat.WITH_TONE_NUMBER)
-              hilog.error(0, "", `${pinyin}`)
-            })
-        }
-        .margin({ top: 10 })
-        Row(){
-          Button("convertToPinyinString")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new PinyinHelper()
-              let pinyin = c.convertToPinyinString("我是中国共产主义接班人。", " ")
-              hilog.error(0, "", `${pinyin}`)
-            })
-        }
-        .margin({ top: 10 })
-        Row() {
-          Button("getShortPinyin")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new PinyinHelper()
-              let pinyin = c.getShortPinyin("我是中国共产主义接班人。")
-              hilog.error(0, "", `${pinyin}`)
-            })
-        }
-        .margin({ top: 10 })
-        Row(){
-          Button("hasMultiPinyin")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new PinyinHelper()
-              let pinyin = c.hasMultiPinyin("长")
-              hilog.error(0, "", `${pinyin}`)
-            })
-        }
-        .margin({ top: 10 })
-
-        Row() {
-          Button("addPinyinDictResource")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let map: Map<string, string> = new Map([["安步当车","ān,bù,dàng,chē"]])
-              let c = new PinyinHelper()
-              c.addPinyinDictResource(map)
-              hilog.error(0, "", `${c.convertToPinyinString("安步当车", ",")}`)
-            })
-        }
-        .margin({ top: 10 })
-        Row(){
-          Button("addMutilPinyinDictResource")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let map: Map<string, string> = new Map([["噱曲蛙伢","āg,tù,dàny,rhē"]])
-              let c = new PinyinHelper()
-              c.addMutilPinyinDictResource(map)
-              hilog.error(0, "", `${c.convertToPinyinString("噱曲蛙伢", ",")}`)
-            })
-        }
-        .margin({ top: 10 })
-        Row(){
-          Button("toTongyongPinyinStringArray")
-            .type(ButtonType.Capsule)
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .onClick(() => {
-              let c = new PinyinHelper()
-              let pinyin = c.toTongyongPinyinStringArray('傳')
-              hilog.error(0, "", `${pinyin.toString()}`)
-            })
-        }
-        .margin({ top: 10 })
-      }
+      .listDirection(Axis.Vertical) // Arrangement direction
+      .scrollBar(BarState.Off)
+      .friction(0.6)
+      .divider({ strokeWidth: 2, color: 0xFFFFFF, startMargin: 20, endMargin: 20 }) // Divider
+      .edgeEffect(EdgeEffect.Spring) // Set the edge scrolling effect to Spring.
+      .width('90%')
     }
-    .height('100%')
     .width('100%')
+    .height('100%')
+    .backgroundColor(0xDCDCDC)
+    .padding({ top: 10, bottom:70 })
   }
 }

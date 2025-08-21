@@ -1,5 +1,21 @@
 {
   "src": [
-    "pages/Index"
+    "pages/Index",
+    "pages/HLT/convertToPinyinArray_01",
+    "pages/HLT/convertToPinyinArray_02",
+    "pages/HLT/convertToPinyinString_01",
+    "pages/HLT/convertToPinyinStringFormat",
+    "pages/HLT/convertToPinyinStringTraditional",
+    "pages/HLT/convertToSimplifiedChinese_01",
+    "pages/HLT/convertToTraditionalChinese_01",
+    "pages/HLT/getShortPinyin",
+    "pages/HLT/hasMultiPinyin",
+    "pages/HLT/isChinese",
+    "pages/HLT/containsChinese",
+    "pages/HLT/isTraditionalChinese",
+    "pages/HLT/addChineseDictResource",
+    "pages/HLT/addMutilPinyinDictResource",
+    "pages/HLT/addPinyinDictResource",
+    "pages/HLT/toTongyongPinyinStringArray"
   ]
 }
